@@ -15,6 +15,7 @@
             --card-bg: #ffffff;
             --pink-accent: #f4d3d3;
             --danger-color: #e5989b;
+            --shadow: 0 4px 12px rgba(212, 163, 115, 0.08); /* 柔らかい影を追加 */
         }
 
         body {
@@ -47,15 +48,16 @@
             padding-bottom: 100px;
         }
 
-        /* キャラクターカード */
+        /* キャラクターカードの改善 */
         .char-card {
             background: var(--card-bg);
             border-radius: 15px;
-            padding: 15px;
+            padding: 18px;
             margin-bottom: 15px;
             border-left: 5px solid var(--accent-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow);
             position: relative;
+            transition: transform 0.2s;
         }
 
         .tag {
@@ -65,6 +67,7 @@
             border-radius: 20px;
             font-size: 0.7rem;
             margin-bottom: 8px;
+            color: var(--text-color);
         }
 
         .char-actions {
@@ -73,23 +76,24 @@
             right: 10px;
         }
 
-        /* 構成ボックス */
+        /* 構成ボックスの改善 */
         .plot-box {
             background: var(--card-bg);
-            border: 1px solid var(--pink-accent);
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
+            border: none;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            gap: 12px;
+            box-shadow: var(--shadow);
         }
 
         .reorder-handle {
             cursor: grab;
             color: var(--accent-color);
             font-size: 1.2rem;
+            opacity: 0.6;
         }
 
         .plot-input {
@@ -97,37 +101,68 @@
             border: none;
             background: transparent;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--text-color);
+            border-bottom: 1px solid transparent;
         }
 
-        /* 執筆エリア */
+        .plot-input:focus {
+            outline: none;
+            border-bottom: 1px solid var(--pink-accent);
+        }
+
+        /* 執筆エリアの改善 */
         .split-editor {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+        }
+
+        .pane {
+            position: relative;
         }
 
         .pane-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--accent-color);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .char-ref-btn {
+            background: var(--pink-accent);
+            border: none;
+            border-radius: 12px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            color: var(--text-color);
         }
 
         textarea {
             width: 100%;
             border: 1px solid var(--pink-accent);
-            border-radius: 10px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 15px;
             font-family: inherit;
             resize: none;
             box-sizing: border-box;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .draft-area { height: 180px; background-color: #fffcfc; }
-        .final-area { height: 300px; background-color: #ffffff; }
+        .draft-area { height: 160px; background-color: #fffcfc; }
+        .final-area { height: 350px; background-color: #ffffff; }
+
+        .word-count {
+            font-size: 0.7rem;
+            color: #999;
+            text-align: right;
+            margin-top: 4px;
+        }
 
         /* ナビゲーション */
         nav {
@@ -140,10 +175,11 @@
             padding: 12px 0;
             border-top: 1px solid var(--pink-accent);
             z-index: 100;
+            padding-bottom: calc(12px + env(safe-area-inset-bottom)); /* iPhone対策 */
         }
 
         .nav-item {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-align: center;
             color: #b5b5b5;
             cursor: pointer;
@@ -159,25 +195,43 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(212, 163, 115, 0.3);
+            transition: 0.2s;
         }
+
+        .btn-round:active { transform: translateY(2px); }
 
         .btn-small {
             background: none;
             border: none;
             color: #aaa;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             cursor: pointer;
-            padding: 2px 5px;
+            padding: 4px 8px;
         }
 
         .btn-delete { color: var(--danger-color); }
 
-        /* ユーティリティ */
+        /* キャラクター参照ドロワー */
+        #char-ref-area {
+            position: fixed;
+            bottom: 80px;
+            left: 15px;
+            right: 15px;
+            max-height: 40vh;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid var(--pink-accent);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 101;
+        }
+
         .hidden { display: none; }
     </style>
 </head>
@@ -186,7 +240,7 @@
 <header>Novel Notes</header>
 
 <main id="app-content">
-    </main>
+</main>
 
 <nav>
     <div class="nav-item active" onclick="switchMode('設定')">設定</div>
@@ -228,7 +282,7 @@
         else if (mode === '執筆') renderWriting();
     }
 
-    // --- ① 設定画面 (Character Library) ---
+    // --- ① 設定画面 ---
     function renderSettings() {
         content.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -285,7 +339,7 @@
         }
     }
 
-    // --- ② 構成画面 (Plot Construction) ---
+    // --- ② 構成画面 ---
     function renderPlot() {
         content.innerHTML = `
             <h3 style="color: var(--accent-color);">Plot Construction</h3>
@@ -305,7 +359,6 @@
             list.appendChild(item);
         });
 
-        // ドラッグ＆ドロップ有効化
         new Sortable(list, {
             handle: '.reorder-handle',
             animation: 150,
@@ -337,39 +390,68 @@
         renderPlot();
     }
 
-    // --- ③ 執筆画面 (Writing Area) ---
+    // --- ③ 執筆画面 ---
     function renderWriting() {
         content.innerHTML = `
-            <h3 style="color: var(--accent-color);">Draft & Final</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="color: var(--accent-color);">Draft & Final</h3>
+                <button class="char-ref-btn" onclick="showCharRef()">キャラ設定を参照</button>
+            </div>
+            
+            <div id="char-ref-area" class="hidden"></div>
+
             <div class="split-editor">
                 <div class="pane">
-                    <div class="pane-label">DRAFT (下書き・メモ)</div>
+                    <div class="pane-label">
+                        <span>DRAFT (メモ)</span>
+                        <span id="count-draft" class="word-count">0文字</span>
+                    </div>
                     <textarea class="draft-area" id="draft-text" placeholder="アイディアを自由に...">${data.writing.draft}</textarea>
                 </div>
                 <div class="pane">
-                    <div class="pane-label">FINAL (清書)</div>
+                    <div class="pane-label">
+                        <span>FINAL (清書)</span>
+                        <span id="count-final" class="word-count">0文字</span>
+                    </div>
                     <textarea class="final-area" id="final-text" placeholder="本番の文章を書く...">${data.writing.final}</textarea>
                 </div>
             </div>
-            <button class="btn-round" style="margin-top:15px; width:100%;" onclick="showCharRef()">キャラ設定を参照</button>
-            <div id="char-ref-area" class="hidden" style="margin-top:15px; background:#fff; border:1px solid var(--pink-accent); padding:10px; border-radius:10px; font-size:0.8rem;"></div>
         `;
 
-        // リアルタイム保存
-        document.getElementById('draft-text').addEventListener('input', (e) => {
+        const draftEl = document.getElementById('draft-text');
+        const finalEl = document.getElementById('final-text');
+
+        const updateCounts = () => {
+            document.getElementById('count-draft').innerText = `${draftEl.value.length}文字`;
+            document.getElementById('count-final').innerText = `${finalEl.value.length}文字`;
+        };
+
+        draftEl.addEventListener('input', (e) => {
             data.writing.draft = e.target.value;
             saveData();
+            updateCounts();
         });
-        document.getElementById('final-text').addEventListener('input', (e) => {
+        finalEl.addEventListener('input', (e) => {
             data.writing.final = e.target.value;
             saveData();
+            updateCounts();
         });
+
+        updateCounts(); // 初期表示時のカウント
     }
 
     function showCharRef() {
         const refArea = document.getElementById('char-ref-area');
         refArea.classList.toggle('hidden');
-        refArea.innerHTML = data.characters.map(c => `<b>${c.name}</b>: ${c.note}`).join('<br><hr style="border:0.5px solid #eee">');
+        if (!refArea.classList.contains('hidden')) {
+            refArea.innerHTML = `
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <strong style="color:var(--accent-color)">Character Reference</strong>
+                    <span onclick="showCharRef()" style="cursor:pointer">× 閉じる</span>
+                </div>
+                ${data.characters.map(c => `<b>${c.name}</b>: ${c.note}`).join('<hr style="border:0; border-top:1px solid #eee; margin:8px 0;">')}
+            `;
+        }
     }
 
     // 初期表示
