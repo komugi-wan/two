@@ -2,8 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Novel Notes - 大人可愛い執筆ツール</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
         :root {
             --bg-color: #fdfaf7;
@@ -12,6 +14,7 @@
             --text-color: #4a4a4a;
             --card-bg: #ffffff;
             --pink-accent: #f4d3d3;
+            --danger-color: #e5989b;
         }
 
         body {
@@ -26,7 +29,6 @@
             overflow: hidden;
         }
 
-        /* ヘッダー */
         header {
             background-color: var(--card-bg);
             padding: 15px;
@@ -35,17 +37,17 @@
             font-weight: bold;
             color: var(--accent-color);
             letter-spacing: 2px;
+            flex-shrink: 0;
         }
 
-        /* メインコンテンツエリア */
         main {
             flex: 1;
             overflow-y: auto;
             padding: 15px;
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
 
-        /* ① キャラクター設定カード */
+        /* キャラクターカード */
         .char-card {
             background: var(--card-bg);
             border-radius: 15px;
@@ -53,6 +55,7 @@
             margin-bottom: 15px;
             border-left: 5px solid var(--accent-color);
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
         }
 
         .tag {
@@ -60,62 +63,73 @@
             background: var(--pink-accent);
             padding: 2px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
         }
 
-        /* ② 構成モード (並び替えボックス) */
+        .char-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* 構成ボックス */
         .plot-box {
             background: var(--card-bg);
-            border: 1px dashed var(--accent-color);
+            border: 1px solid var(--pink-accent);
             padding: 12px;
             margin: 10px 0;
             border-radius: 8px;
             display: flex;
             align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
         .reorder-handle {
-            margin-right: 10px;
             cursor: grab;
-            color: #ccc;
+            color: var(--accent-color);
+            font-size: 1.2rem;
         }
 
-        /* ② 下書き・清書（横並び比較） */
+        .plot-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        /* 執筆エリア */
         .split-editor {
             display: flex;
-            gap: 10px;
-            height: 100%;
-        }
-
-        .pane {
-            flex: 1;
-            display: flex;
             flex-direction: column;
+            gap: 15px;
         }
 
         .pane-label {
             font-size: 0.7rem;
-            text-align: center;
-            color: #999;
+            color: var(--accent-color);
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
         textarea {
             width: 100%;
-            height: 250px;
             border: 1px solid var(--pink-accent);
             border-radius: 10px;
-            padding: 10px;
+            padding: 12px;
             font-family: inherit;
             resize: none;
             box-sizing: border-box;
+            line-height: 1.6;
         }
 
-        .draft-area { background-color: #fff9f9; text-decoration: line-through color(red); }
-        .final-area { background-color: #ffffff; }
+        .draft-area { height: 180px; background-color: #fffcfc; }
+        .final-area { height: 300px; background-color: #ffffff; }
 
-        /* 下部ナビゲーション */
+        /* ナビゲーション */
         nav {
             position: fixed;
             bottom: 0;
@@ -123,29 +137,48 @@
             background: var(--card-bg);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             border-top: 1px solid var(--pink-accent);
+            z-index: 100;
         }
 
         .nav-item {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-align: center;
             color: #b5b5b5;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         .nav-item.active {
             color: var(--accent-color);
+            font-weight: bold;
         }
 
         .btn-round {
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 18px;
             border-radius: 20px;
             font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+
+        .btn-small {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 0.7rem;
+            cursor: pointer;
+            padding: 2px 5px;
+        }
+
+        .btn-delete { color: var(--danger-color); }
+
+        /* ユーティリティ */
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -153,83 +186,195 @@
 <header>Novel Notes</header>
 
 <main id="app-content">
-    <section>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="color: var(--accent-color);">Character Library</h3>
-            <button class="btn-round">+ Add</button>
-        </div>
-        
-        <div class="char-card">
-            <span class="tag">#主人公</span>
-            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">名前：アリシア</div>
-            <p style="font-size: 0.9rem; line-height: 1.6;">
-                原作設定：王立図書館の司書。<br>
-                口癖：「知識は重罪よ」<br>
-                二人称：貴方、○○様
-            </p>
-        </div>
-
-        <div class="char-card">
-            <span class="tag">#ライバル</span>
-            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">名前：エドワード</div>
-            <p style="font-size: 0.9rem; line-height: 1.6;">
-                原作設定：隣国の魔術師。冷徹だが実は甘党。<br>
-                口癖：「合理的ではないな」
-            </p>
-        </div>
-    </section>
-</main>
+    </main>
 
 <nav>
-    <div class="nav-item active">設定</div>
-    <div class="nav-item">構成</div>
-    <div class="nav-item">執筆</div>
-    <div class="nav-item">出力</div>
+    <div class="nav-item active" onclick="switchMode('設定')">設定</div>
+    <div class="nav-item" onclick="switchMode('構成')">構成</div>
+    <div class="nav-item" onclick="switchMode('執筆')">執筆</div>
 </nav>
 
 <script>
-    // モード切り替えの簡易スクリプト
-    const navItems = document.querySelectorAll('.nav-item');
+    // --- データ管理 ---
+    let data = JSON.parse(localStorage.getItem('novelData')) || {
+        characters: [
+            { id: 1, tag: '主人公', name: 'アリシア', note: '王立図書館の司書。口癖：「知識は重罪よ」' },
+            { id: 2, tag: 'ライバル', name: 'エドワード', note: '隣国の魔術師。実は甘党。' }
+        ],
+        plots: [
+            { id: 1, text: '出会いのシーン' },
+            { id: 2, text: '図書館での対立' }
+        ],
+        writing: { draft: '', final: '' }
+    };
+
+    function saveData() {
+        localStorage.setItem('novelData', JSON.stringify(data));
+    }
+
     const content = document.getElementById('app-content');
 
-    const viewTemplates = {
-        '設定': `
-            <h3 style="color: var(--accent-color);">Character Library</h3>
-            <div class="char-card"><span class="tag">#主人公</span><div style="font-weight:bold;">名前：アリシア</div><p>...</p></div>
-        `,
-        '構成': `
+    // --- モード切り替え ---
+    function switchMode(mode) {
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.toggle('active', el.innerText === mode);
+        });
+        render(mode);
+    }
+
+    function render(mode) {
+        if (mode === '設定') renderSettings();
+        else if (mode === '構成') renderPlot();
+        else if (mode === '執筆') renderWriting();
+    }
+
+    // --- ① 設定画面 (Character Library) ---
+    function renderSettings() {
+        content.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: var(--accent-color); margin:0;">Character Library</h3>
+                <button class="btn-round" onclick="addCharacter()">+ Add</button>
+            </div>
+            <div id="char-list"></div>
+        `;
+        const list = document.getElementById('char-list');
+        data.characters.forEach(char => {
+            const card = document.createElement('div');
+            card.className = 'char-card';
+            card.innerHTML = `
+                <div class="char-actions">
+                    <button class="btn-small" onclick="editCharacter(${char.id})">編集</button>
+                    <button class="btn-small btn-delete" onclick="deleteCharacter(${char.id})">削除</button>
+                </div>
+                <span class="tag">#${char.tag}</span>
+                <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">${char.name}</div>
+                <p style="font-size: 0.85rem; white-space: pre-wrap; margin:0;">${char.note}</p>
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    function addCharacter() {
+        const name = prompt("キャラ名を入力してください");
+        if (!name) return;
+        data.characters.push({
+            id: Date.now(),
+            tag: '新設定',
+            name: name,
+            note: '詳細をここに入力...'
+        });
+        saveData();
+        renderSettings();
+    }
+
+    function editCharacter(id) {
+        const char = data.characters.find(c => c.id === id);
+        const newNote = prompt("設定詳細を編集", char.note);
+        if (newNote !== null) {
+            char.note = newNote;
+            saveData();
+            renderSettings();
+        }
+    }
+
+    function deleteCharacter(id) {
+        if (confirm("削除してもよろしいですか？")) {
+            data.characters = data.characters.filter(c => c.id !== id);
+            saveData();
+            renderSettings();
+        }
+    }
+
+    // --- ② 構成画面 (Plot Construction) ---
+    function renderPlot() {
+        content.innerHTML = `
             <h3 style="color: var(--accent-color);">Plot Construction</h3>
-            <div class="plot-box"><span>☰</span> <span>出会いのシーン</span></div>
-            <div class="plot-box"><span>☰</span> <span>図書館での対立</span></div>
-            <div class="plot-box"><span>☰</span> <span>共通の敵の出現</span></div>
-            <button class="btn-round" style="width:100%;">+ ボックスを追加</button>
-        `,
-        '執筆': `
+            <div id="plot-list"></div>
+            <button class="btn-round" style="width:100%; margin-top:15px;" onclick="addPlot()">+ ボックスを追加</button>
+        `;
+        const list = document.getElementById('plot-list');
+        data.plots.forEach(plot => {
+            const item = document.createElement('div');
+            item.className = 'plot-box';
+            item.dataset.id = plot.id;
+            item.innerHTML = `
+                <span class="reorder-handle">☰</span>
+                <input type="text" class="plot-input" value="${plot.text}" onchange="updatePlot(${plot.id}, this.value)">
+                <button class="btn-small btn-delete" onclick="deletePlot(${plot.id})">×</button>
+            `;
+            list.appendChild(item);
+        });
+
+        // ドラッグ＆ドロップ有効化
+        new Sortable(list, {
+            handle: '.reorder-handle',
+            animation: 150,
+            onEnd: () => {
+                const newOrder = Array.from(list.children).map(el => {
+                    return data.plots.find(p => p.id == el.dataset.id);
+                });
+                data.plots = newOrder;
+                saveData();
+            }
+        });
+    }
+
+    function addPlot() {
+        data.plots.push({ id: Date.now(), text: '新しいシーン' });
+        saveData();
+        renderPlot();
+    }
+
+    function updatePlot(id, val) {
+        const plot = data.plots.find(p => p.id === id);
+        plot.text = val;
+        saveData();
+    }
+
+    function deletePlot(id) {
+        data.plots = data.plots.filter(p => p.id !== id);
+        saveData();
+        renderPlot();
+    }
+
+    // --- ③ 執筆画面 (Writing Area) ---
+    function renderWriting() {
+        content.innerHTML = `
             <h3 style="color: var(--accent-color);">Draft & Final</h3>
             <div class="split-editor">
                 <div class="pane">
-                    <div class="pane-label">DRAFT (下書き)</div>
-                    <textarea class="draft-area" placeholder="ここにアイディアを書き殴る..."></textarea>
+                    <div class="pane-label">DRAFT (下書き・メモ)</div>
+                    <textarea class="draft-area" id="draft-text" placeholder="アイディアを自由に...">${data.writing.draft}</textarea>
                 </div>
                 <div class="pane">
                     <div class="pane-label">FINAL (清書)</div>
-                    <textarea class="final-area" placeholder="下書きを見ながら清書..."></textarea>
+                    <textarea class="final-area" id="final-text" placeholder="本番の文章を書く...">${data.writing.final}</textarea>
                 </div>
             </div>
-            <button class="btn-round" style="margin-top:10px; width:100%;">キャラ設定を呼び出す</button>
-        `
-    };
+            <button class="btn-round" style="margin-top:15px; width:100%;" onclick="showCharRef()">キャラ設定を参照</button>
+            <div id="char-ref-area" class="hidden" style="margin-top:15px; background:#fff; border:1px solid var(--pink-accent); padding:10px; border-radius:10px; font-size:0.8rem;"></div>
+        `;
 
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            navItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            const mode = item.innerText;
-            if(viewTemplates[mode]) {
-                content.innerHTML = viewTemplates[mode];
-            }
+        // リアルタイム保存
+        document.getElementById('draft-text').addEventListener('input', (e) => {
+            data.writing.draft = e.target.value;
+            saveData();
         });
-    });
+        document.getElementById('final-text').addEventListener('input', (e) => {
+            data.writing.final = e.target.value;
+            saveData();
+        });
+    }
+
+    function showCharRef() {
+        const refArea = document.getElementById('char-ref-area');
+        refArea.classList.toggle('hidden');
+        refArea.innerHTML = data.characters.map(c => `<b>${c.name}</b>: ${c.note}`).join('<br><hr style="border:0.5px solid #eee">');
+    }
+
+    // 初期表示
+    render('設定');
 </script>
+
 </body>
 </html>
