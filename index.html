@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novel Notes - 大人可愛い執筆ツール</title>
+    <style>
+        :root {
+            --bg-color: #fdfaf7;
+            --accent-color: #d4a373;
+            --sub-color: #e9edc9;
+            --text-color: #4a4a4a;
+            --card-bg: #ffffff;
+            --pink-accent: #f4d3d3;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Sawarabi Mincho", serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: var(--card-bg);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--pink-accent);
+            font-weight: bold;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        /* メインコンテンツエリア */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+
+        /* ① キャラクター設定カード */
+        .char-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--pink-accent);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        /* ② 構成モード (並び替えボックス) */
+        .plot-box {
+            background: var(--card-bg);
+            border: 1px dashed var(--accent-color);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .reorder-handle {
+            margin-right: 10px;
+            cursor: grab;
+            color: #ccc;
+        }
+
+        /* ② 下書き・清書（横並び比較） */
+        .split-editor {
+            display: flex;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pane-label {
+            font-size: 0.7rem;
+            text-align: center;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            border: 1px solid var(--pink-accent);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: inherit;
+            resize: none;
+            box-sizing: border-box;
+        }
+
+        .draft-area { background-color: #fff9f9; text-decoration: line-through color(red); }
+        .final-area { background-color: #ffffff; }
+
+        /* 下部ナビゲーション */
+        nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid var(--pink-accent);
+        }
+
+        .nav-item {
+            font-size: 0.7rem;
+            text-align: center;
+            color: #b5b5b5;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        .btn-round {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>Novel Notes</header>
+
+<main id="app-content">
+    <section>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="color: var(--accent-color);">Character Library</h3>
+            <button class="btn-round">+ Add</button>
+        </div>
+        
+        <div class="char-card">
+            <span class="tag">#主人公</span>
+            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">名前：アリシア</div>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+                原作設定：王立図書館の司書。<br>
+                口癖：「知識は重罪よ」<br>
+                二人称：貴方、○○様
+            </p>
+        </div>
+
+        <div class="char-card">
+            <span class="tag">#ライバル</span>
+            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">名前：エドワード</div>
+            <p style="font-size: 0.9rem; line-height: 1.6;">
+                原作設定：隣国の魔術師。冷徹だが実は甘党。<br>
+                口癖：「合理的ではないな」
+            </p>
+        </div>
+    </section>
+</main>
+
+<nav>
+    <div class="nav-item active">設定</div>
+    <div class="nav-item">構成</div>
+    <div class="nav-item">執筆</div>
+    <div class="nav-item">出力</div>
+</nav>
+
+<script>
+    // モード切り替えの簡易スクリプト
+    const navItems = document.querySelectorAll('.nav-item');
+    const content = document.getElementById('app-content');
+
+    const viewTemplates = {
+        '設定': `
+            <h3 style="color: var(--accent-color);">Character Library</h3>
+            <div class="char-card"><span class="tag">#主人公</span><div style="font-weight:bold;">名前：アリシア</div><p>...</p></div>
+        `,
+        '構成': `
+            <h3 style="color: var(--accent-color);">Plot Construction</h3>
+            <div class="plot-box"><span>☰</span> <span>出会いのシーン</span></div>
+            <div class="plot-box"><span>☰</span> <span>図書館での対立</span></div>
+            <div class="plot-box"><span>☰</span> <span>共通の敵の出現</span></div>
+            <button class="btn-round" style="width:100%;">+ ボックスを追加</button>
+        `,
+        '執筆': `
+            <h3 style="color: var(--accent-color);">Draft & Final</h3>
+            <div class="split-editor">
+                <div class="pane">
+                    <div class="pane-label">DRAFT (下書き)</div>
+                    <textarea class="draft-area" placeholder="ここにアイディアを書き殴る..."></textarea>
+                </div>
+                <div class="pane">
+                    <div class="pane-label">FINAL (清書)</div>
+                    <textarea class="final-area" placeholder="下書きを見ながら清書..."></textarea>
+                </div>
+            </div>
+            <button class="btn-round" style="margin-top:10px; width:100%;">キャラ設定を呼び出す</button>
+        `
+    };
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            navItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            const mode = item.innerText;
+            if(viewTemplates[mode]) {
+                content.innerHTML = viewTemplates[mode];
+            }
+        });
+    });
+</script>
+</body>
+</html>
