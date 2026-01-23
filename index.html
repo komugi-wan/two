@@ -165,6 +165,17 @@
             cursor: pointer;
         }
 
+        .plot-selector {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--pink-accent);
+            border-radius: 10px;
+            background: white;
+            font-family: inherit;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
         textarea {
             width: 100%;
             border: 1px solid var(--pink-accent);
@@ -179,7 +190,7 @@
 
         /* 長文対応：高さを動的に確保 */
         .draft-area { height: 160px; }
-        .final-area { height: 400px; } /* 長文を想定し少し拡大 */
+        .final-area { height: 400px; }
 
         .word-count { font-size: 0.7rem; color: #999; }
 
@@ -253,11 +264,17 @@
             { id: 2, tag: 'ライバル', name: 'エドワード', note: '隣国の魔術師。実は甘党。' }
         ],
         plots: [
-            { id: 1, text: '出会いのシーン' },
-            { id: 2, text: '図書館での対立' }
+            { id: 1, text: '出会いのシーン', draft: '', final: '' },
+            { id: 2, text: '図書館での対立', draft: '', final: '' }
         ],
-        writing: { draft: '', final: '' }
+        currentPlotId: null // 現在執筆中のプロットIDを保持
     };
+
+    // 旧データ形式からの移行対応（draft/finalがない場合）
+    data.plots.forEach(p => {
+        if (p.draft === undefined) p.draft = '';
+        if (p.final === undefined) p.final = '';
+    });
 
     function saveData() {
         localStorage.setItem('novelData', JSON.stringify(data));
@@ -305,7 +322,6 @@
         });
     }
 
-    // 入力改善：モーダルによる編集
     function openCharModal(id = null) {
         const char = data.characters.find(c => c.id === id) || { name: '', tag: '新設定', note: '' };
         const modalContainer = document.getElementById('modal-container');
@@ -319,7 +335,7 @@
                         <input type="text" id="edit-char-name" class="modal-input" value="${char.name}" placeholder="名前を入力...">
                     </div>
                     <div class="modal-field">
-                        <label>タグ（自由に変更できます）</label>
+                        <label>タグ</label>
                         <input type="text" id="edit-char-tag" class="modal-input" value="${char.tag}" placeholder="例：主人公、敵役など">
                     </div>
                     <div class="modal-field">
@@ -343,28 +359,20 @@
         const name = document.getElementById('edit-char-name').value;
         const tag = document.getElementById('edit-char-tag').value;
         const note = document.getElementById('edit-char-note').value;
-
         if (!name) return alert("名前を入力してください");
-
         if (id) {
             const char = data.characters.find(c => c.id === id);
-            char.name = name;
-            char.tag = tag;
-            char.note = note;
+            char.name = name; char.tag = tag; char.note = note;
         } else {
             data.characters.push({ id: Date.now(), name, tag, note });
         }
-        
-        saveData();
-        closeModal();
-        renderSettings();
+        saveData(); closeModal(); renderSettings();
     }
 
     function deleteCharacter(id) {
         if (confirm("削除してもよろしいですか？")) {
             data.characters = data.characters.filter(c => c.id !== id);
-            saveData();
-            renderSettings();
+            saveData(); renderSettings();
         }
     }
 
@@ -402,9 +410,8 @@
     }
 
     function addPlot() {
-        data.plots.push({ id: Date.now(), text: '新しいシーン' });
-        saveData();
-        renderPlot();
+        data.plots.push({ id: Date.now(), text: '新しいシーン', draft: '', final: '' });
+        saveData(); renderPlot();
     }
 
     function updatePlot(id, val) {
@@ -414,18 +421,32 @@
     }
 
     function deletePlot(id) {
-        data.plots = data.plots.filter(p => p.id !== id);
-        saveData();
-        renderPlot();
+        if (confirm("この構成ボックスと、紐付いた執筆データも削除されます。よろしいですか？")) {
+            data.plots = data.plots.filter(p => p.id !== id);
+            if (data.currentPlotId === id) data.currentPlotId = null;
+            saveData(); renderPlot();
+        }
     }
 
-    // --- ③ 執筆画面（長文・参照強化） ---
+    // --- ③ 執筆画面（構成ボックス紐付け版） ---
     function renderWriting() {
+        // 執筆対象が未選択かつプロットが存在する場合、最初のプロットを選択状態にする
+        if (!data.currentPlotId && data.plots.length > 0) {
+            data.currentPlotId = data.plots[0].id;
+        }
+
+        const currentPlot = data.plots.find(p => p.id == data.currentPlotId) || { draft: '', final: '' };
+
         content.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="color: var(--accent-color);">Draft & Final</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:10px;">
+                <h3 style="color: var(--accent-color); margin:0;">Draft & Final</h3>
                 <button class="char-ref-btn" onclick="showCharRef()">設定を参照</button>
             </div>
+
+            <select class="plot-selector" onchange="changeTargetPlot(this.value)">
+                ${data.plots.length === 0 ? '<option value="">構成ボックスがありません</option>' : ''}
+                ${data.plots.map(p => `<option value="${p.id}" ${p.id == data.currentPlotId ? 'selected' : ''}>${p.text}</option>`).join('')}
+            </select>
             
             <div id="char-ref-area" class="hidden"></div>
 
@@ -435,14 +456,14 @@
                         <span>DRAFT (アイディア)</span>
                         <span id="count-draft" class="word-count">0文字</span>
                     </div>
-                    <textarea class="draft-area" id="draft-text" placeholder="アイディアを自由に...">${data.writing.draft}</textarea>
+                    <textarea class="draft-area" id="draft-text" placeholder="アイディアを自由に...">${currentPlot.draft || ''}</textarea>
                 </div>
                 <div class="pane">
                     <div class="pane-label">
                         <span>FINAL (本文)</span>
                         <span id="count-final" class="word-count">0文字</span>
                     </div>
-                    <textarea class="final-area" id="final-text" placeholder="本番の文章を書く...">${data.writing.final}</textarea>
+                    <textarea class="final-area" id="final-text" placeholder="本番の文章を書く...">${currentPlot.final || ''}</textarea>
                 </div>
             </div>
         `;
@@ -455,18 +476,26 @@
             document.getElementById('count-final').innerText = `${finalEl.value.length}文字`;
         };
 
-        draftEl.addEventListener('input', (e) => {
-            data.writing.draft = e.target.value;
-            saveData();
-            updateCounts();
-        });
-        finalEl.addEventListener('input', (e) => {
-            data.writing.final = e.target.value;
-            saveData();
-            updateCounts();
-        });
+        const handleInput = () => {
+            if (!data.currentPlotId) return;
+            const plot = data.plots.find(p => p.id == data.currentPlotId);
+            if (plot) {
+                plot.draft = draftEl.value;
+                plot.final = finalEl.value;
+                saveData();
+                updateCounts();
+            }
+        };
 
+        draftEl.addEventListener('input', handleInput);
+        finalEl.addEventListener('input', handleInput);
         updateCounts();
+    }
+
+    function changeTargetPlot(id) {
+        data.currentPlotId = id;
+        saveData();
+        renderWriting();
     }
 
     function showCharRef() {
