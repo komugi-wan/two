@@ -295,25 +295,14 @@
 
 <script>
     // --- データ管理 ---
+    // [修正] デフォルトの例を削除し、空の状態で開始するように変更
     let data = JSON.parse(localStorage.getItem('novelData_v2')) || {
-        characters: [
-            { id: 1, tag: '主人公', name: 'アリシア', note: '王立図書館の司書。口癖：「知識は重罪よ」' },
-            { id: 2, tag: 'ライバル', name: 'エドワード', note: '隣国の魔術師。実は甘党。' }
-        ],
-        plots: [
-            { 
-                id: 1, 
-                text: 'シーン1：出会い', 
-                sections: [
-                    { id: 101, text: '節1：予兆', draft: '', final: '' }
-                ]
-            }
-        ],
+        characters: [],
+        plots: [],
         currentPlotId: null,
-        currentSectionId: null // 追加：編集中の節を管理
+        currentSectionId: null
     };
 
-    // 以前の形式（1層）からのデータ移行
     if (localStorage.getItem('novelData')) {
         const oldData = JSON.parse(localStorage.getItem('novelData'));
         if (oldData.plots && oldData.plots.length > 0 && !oldData.plots[0].sections) {
@@ -338,7 +327,6 @@
         document.querySelectorAll('.nav-item').forEach(el => {
             el.classList.toggle('active', el.innerText === mode);
         });
-        // 執筆モードに入るときは必ずリストから表示させるためIDをリセットしない
         render(mode);
     }
 
@@ -487,8 +475,19 @@
         });
     }
 
+    // [修正] シーン追加時に自動で5つの節を追加するように変更
     function addPlot() {
-        data.plots.push({ id: Date.now(), text: '新しいシーン', sections: [] });
+        const newPlotId = Date.now();
+        const initialSections = [];
+        for (let i = 1; i <= 5; i++) {
+            initialSections.push({ 
+                id: newPlotId + i, 
+                text: `節${i}`, 
+                draft: '', 
+                final: '' 
+            });
+        }
+        data.plots.push({ id: newPlotId, text: '新しいシーン', sections: initialSections });
         saveData(); renderPlot();
     }
 
@@ -525,9 +524,9 @@
     // --- ③ 執筆画面 ---
     function renderWriting() {
         if (data.currentSectionId) {
-            renderEditor(); // 節が選択されていればエディタを表示
+            renderEditor();
         } else {
-            renderSectionSelector(); // 未選択なら選択画面を表示
+            renderSectionSelector();
         }
     }
 
@@ -538,9 +537,11 @@
         }
 
         const currentPlot = data.plots.find(p => p.id == data.currentPlotId);
-
         content.innerHTML = `
-            <h3 style="color: var(--accent-color);">Writing</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="color: var(--accent-color); margin:0;">Writing</h3>
+                <button class="btn-round" style="padding: 5px 15px; font-size: 0.75rem;" onclick="copyAllFinalText()">本文を一括コピー</button>
+            </div>
             <label style="font-size:0.7rem; color:var(--accent-color); font-weight:bold;">シーンを選択</label>
             <select class="plot-selector" onchange="changeTargetPlot(this.value)">
                 ${data.plots.map(p => `<option value="${p.id}" ${p.id == data.currentPlotId ? 'selected' : ''}>${p.text}</option>`).join('')}
@@ -549,7 +550,7 @@
             <div style="margin-top:20px;">
                 <label style="font-size:0.7rem; color:var(--accent-color); font-weight:bold;">節を選択して執筆開始</label>
                 <div id="writing-section-list" style="margin-top:10px;">
-                    ${currentPlot && currentPlot.sections.length > 0 ? 
+                    ${currentPlot && currentPlot.sections.length > 0 ?
                         currentPlot.sections.map(s => `
                             <div class="writing-list-item" onclick="selectSection(${s.id})">
                                 <div style="font-weight:bold;">${s.text}</div>
@@ -563,6 +564,31 @@
                 </div>
             </div>
         `;
+    }
+
+    // [追加] 本文一括コピー機能
+    function copyAllFinalText() {
+        let allText = "";
+        data.plots.forEach(plot => {
+            allText += `【${plot.text}】\n`;
+            plot.sections.forEach(sec => {
+                if (sec.final) {
+                    allText += `${sec.final}\n\n`;
+                }
+            });
+            allText += `\n`;
+        });
+
+        if (!allText.trim()) {
+            alert("コピーする本文がありません。");
+            return;
+        }
+
+        navigator.clipboard.writeText(allText).then(() => {
+            alert("全シーンの本文（FINAL）をコピーしました。");
+        }).catch(err => {
+            alert("コピーに失敗しました。");
+        });
     }
 
     // 実際のエディタ画面
@@ -606,7 +632,6 @@
                 </div>
             </div>
         `;
-
         const draftEl = document.getElementById('draft-text');
         const finalEl = document.getElementById('final-text');
 
@@ -655,12 +680,12 @@
                     <strong style="color:var(--accent-color)">Reference</strong>
                     <span onclick="showCharRef()" style="cursor:pointer">× Close</span>
                 </div>
-                ${data.characters.map(c => `
+                ${data.characters.length > 0 ? data.characters.map(c => `
                     <div style="margin-bottom:10px;">
                         <span class="tag">#${c.tag}</span> <b>${c.name}</b>
                         <div style="font-size:0.8rem; color:#666; margin-top:3px;">${c.note}</div>
                     </div>
-                `).join('<hr style="border:0; border-top:1px solid #eee; margin:8px 0;">')}
+                `).join('<hr style="border:0; border-top:1px solid #eee; margin:8px 0;">') : '<p style="font-size:0.8rem; color:#999;">キャラクターが登録されていません</p>'}
             `;
         }
     }
