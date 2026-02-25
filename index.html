@@ -2,697 +2,371 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Novel Notes - 大人可愛い執筆ツール</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dusky Pink Shopping Calc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fdfaf7;
-            --accent-color: #d4a373;
-            --sub-color: #e9edc9;
-            --text-color: #4a4a4a;
-            --card-bg: #ffffff;
-            --pink-accent: #f4d3d3;
-            --danger-color: #e5989b;
-            --shadow: 0 4px 12px rgba(212, 163, 115, 0.08);
+            --main-pink: #d4a3a3; /* くすみピンク */
+            --soft-pink: #e9d5d5;
+            --light-pink: #fdf8f8;
+            --accent-gold: #b8944d;
+            --text-color: #5a4a4a;
+            --white: #ffffff;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: "Sawarabi Mincho", serif;
-            background-color: var(--bg-color);
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--light-pink);
             color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
         }
 
-        header {
-            background-color: var(--card-bg);
-            padding: 15px;
+        .header-title {
             text-align: center;
-            border-bottom: 1px solid var(--pink-accent);
-            font-weight: bold;
-            color: var(--accent-color);
-            letter-spacing: 2px;
-            flex-shrink: 0;
+            font-family: 'Playfair Display', serif;
+            color: var(--main-pink);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
         }
 
-        main {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            padding-bottom: 100px;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* キャラクターカード */
-        .char-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--accent-color);
-            box-shadow: var(--shadow);
+        /* セット（店舗）のカード */
+        .shop-card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(212, 163, 163, 0.15);
+            border: 1px solid rgba(184, 148, 77, 0.1);
             position: relative;
         }
 
-        .tag {
-            display: inline-block;
-            background: var(--pink-accent);
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
-
-        .char-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        /* 編集モーダル */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
+        .shop-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            z-index: 1000;
+            margin-bottom: 25px;
         }
 
-        .modal-content {
-            background: var(--bg-color);
-            width: 90%;
-            max-height: 80vh;
-            border-radius: 20px;
-            padding: 20px;
-            overflow-y: auto;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        .shop-title {
+            font-size: 1.4rem;
+            border: none;
+            border-bottom: 2px solid var(--soft-pink);
+            color: var(--main-pink);
+            width: 60%;
+            padding: 5px;
+            outline: none;
+            font-weight: 500;
         }
 
-        .modal-field {
-            margin-bottom: 15px;
-        }
-
-        .modal-field label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--accent-color);
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .modal-input, .modal-textarea {
-            width: 100%;
-            border: 1px solid var(--pink-accent);
-            border-radius: 8px;
-            padding: 10px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-
-        /* 構成ボックス (二層対応) */
-        .plot-group {
-            background: var(--card-bg);
+        /* 特典設定エリア */
+        .bonus-badge {
+            background: var(--light-pink);
+            padding: 15px 20px;
             border-radius: 15px;
-            margin-bottom: 20px;
-            padding: 10px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--pink-accent);
-        }
-
-        .plot-box {
-            background: #fdfdfd;
-            border: 1px solid #eee;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--accent-gold);
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .section-list {
-            padding-left: 20px;
+        /* 商品テーブル風レイアウト */
+        .item-list-header {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 80px 100px 40px;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--main-pink);
+            margin-bottom: 10px;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 60px 2fr 1fr 80px 100px 40px;
+            gap: 10px;
+            align-items: center;
+            background: var(--white);
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .item-row:hover {
+            border-color: var(--soft-pink);
+        }
+
+        /* 画像アップロード */
+        .img-upload {
+            width: 50px;
+            height: 50px;
+            border: 1px dashed var(--soft-pink);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            font-size: 0.7rem;
+            color: var(--soft-pink);
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 8px;
+            box-sizing: border-box;
+            color: var(--text-color);
+        }
+
+        .subtotal-text {
+            text-align: right;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        /* 合計エリア */
+        .footer-summary {
+            margin-top: 30px;
+            text-align: right;
+            border-top: 1px solid var(--light-pink);
+            padding-top: 20px;
+        }
+
+        .total-price {
+            font-size: 2rem;
+            color: var(--main-pink);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .bonus-info {
+            color: var(--accent-gold);
+            font-size: 1rem;
             margin-top: 5px;
         }
 
-        .section-box {
-            background: white;
-            border: 1px dashed var(--accent-color);
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .reorder-handle { cursor: grab; color: var(--accent-color); opacity: 0.6; }
-
-        .plot-input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            font-size: 1rem;
-            color: var(--text-color);
-            border-bottom: 1px solid transparent;
-        }
-        .plot-input:focus { outline: none; border-bottom: 1px solid var(--pink-accent); }
-
-        /* 執筆エリア */
-        .writing-list-item {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--pink-accent);
+        /* ボタン */
+        .btn {
             cursor: pointer;
-            box-shadow: var(--shadow);
-        }
-        .writing-list-item:active { background: var(--bg-color); }
-
-        .split-editor { display: flex; flex-direction: column; gap: 20px; }
-        .pane { position: relative; }
-        .pane-label {
-            font-size: 0.75rem;
-            color: var(--accent-color);
-            margin-bottom: 8px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .char-ref-btn {
-            background: var(--pink-accent);
             border: none;
-            border-radius: 12px;
-            padding: 4px 12px;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-
-        .plot-selector {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--pink-accent);
-            border-radius: 10px;
-            background: white;
-            font-family: inherit;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        textarea {
-            width: 100%;
-            border: 1px solid var(--pink-accent);
-            border-radius: 12px;
-            padding: 15px;
-            font-family: inherit;
-            resize: none;
-            box-sizing: border-box;
-            line-height: 1.8;
-            font-size: 1rem;
-        }
-
-        .draft-area { height: 160px; }
-        .final-area { height: 400px; }
-
-        .word-count { font-size: 0.7rem; color: #999; }
-
-        /* ナビゲーション */
-        nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background: var(--card-bg);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            border-top: 1px solid var(--pink-accent);
-            z-index: 100;
-            padding-bottom: calc(12px + env(safe-area-inset-bottom));
-        }
-
-        .nav-item { font-size: 0.8rem; text-align: center; color: #b5b5b5; cursor: pointer; }
-        .nav-item.active { color: var(--accent-color); font-weight: bold; }
-
-        .btn-round {
-            background: var(--accent-color);
-            color: white;
-            border: none;
+            border-radius: 30px;
             padding: 10px 20px;
-            border-radius: 25px;
+            transition: all 0.3s;
             font-size: 0.85rem;
-            cursor: pointer;
         }
 
-        .btn-small { background: none; border: none; color: #aaa; font-size: 0.75rem; cursor: pointer; }
-        .btn-delete { color: var(--danger-color); }
-
-        #char-ref-area {
-            position: fixed;
-            bottom: 80px;
-            left: 15px;
-            right: 15px;
-            max-height: 40vh;
-            overflow-y: auto;
-            background: white;
-            border: 1px solid var(--pink-accent);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-            z-index: 101;
+        .btn-add-item { background: var(--soft-pink); color: var(--text-color); }
+        .btn-duplicate { background: var(--white); border: 1px solid var(--main-pink); color: var(--main-pink); }
+        .btn-remove { background: #fdf1f1; color: #d4a3a3; }
+        .btn-main-add { 
+            background: var(--main-pink); color: white; 
+            padding: 15px 40px; font-size: 1.1rem; 
+            display: block; margin: 30px auto;
+            box-shadow: 0 10px 20px rgba(212, 163, 163, 0.3);
         }
 
-        .hidden { display: none; }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+
     </style>
 </head>
 <body>
 
-<header>Novel Notes</header>
+    <div class="header-title">Shopping Atelier</div>
 
-<main id="app-content"></main>
+    <div id="app" class="container">
+        </div>
 
-<div id="modal-container"></div>
+    <button class="btn btn-main-add" onclick="addSet()">+ Add New Shop</button>
 
-<nav>
-    <div class="nav-item active" onclick="switchMode('設定')">設定</div>
-    <div class="nav-item" onclick="switchMode('構成')">構成</div>
-    <div class="nav-item" onclick="switchMode('執筆')">執筆</div>
-</nav>
+    <script>
+        let setCounter = 0;
 
-<script>
-    // --- データ管理 ---
-    // [修正] デフォルトの例を削除し、空の状態で開始するように変更
-    let data = JSON.parse(localStorage.getItem('novelData_v2')) || {
-        characters: [],
-        plots: [],
-        currentPlotId: null,
-        currentSectionId: null
-    };
-
-    if (localStorage.getItem('novelData')) {
-        const oldData = JSON.parse(localStorage.getItem('novelData'));
-        if (oldData.plots && oldData.plots.length > 0 && !oldData.plots[0].sections) {
-            data.plots = oldData.plots.map(p => ({
-                id: p.id,
-                text: p.text,
-                sections: [{ id: Date.now() + Math.random(), text: 'メイン', draft: p.draft || '', final: p.final || '' }]
-            }));
-            localStorage.removeItem('novelData');
-            saveData();
-        }
-    }
-
-    function saveData() {
-        localStorage.setItem('novelData_v2', JSON.stringify(data));
-    }
-
-    const content = document.getElementById('app-content');
-
-    // --- モード切り替え ---
-    function switchMode(mode) {
-        document.querySelectorAll('.nav-item').forEach(el => {
-            el.classList.toggle('active', el.innerText === mode);
-        });
-        render(mode);
-    }
-
-    function render(mode) {
-        if (mode === '設定') renderSettings();
-        else if (mode === '構成') renderPlot();
-        else if (mode === '執筆') renderWriting();
-    }
-
-    // --- ① 設定画面 ---
-    function renderSettings() {
-        content.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="color: var(--accent-color); margin:0;">Character Library</h3>
-                <button class="btn-round" onclick="openCharModal()">+ Add</button>
-            </div>
-            <div id="char-list"></div>
-        `;
-        const list = document.getElementById('char-list');
-        data.characters.forEach(char => {
-            const card = document.createElement('div');
-            card.className = 'char-card';
-            card.innerHTML = `
-                <div class="char-actions">
-                    <button class="btn-small" onclick="openCharModal(${char.id})">編集</button>
-                    <button class="btn-small btn-delete" onclick="deleteCharacter(${char.id})">削除</button>
-                </div>
-                <span class="tag">#${char.tag}</span>
-                <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">${char.name}</div>
-                <p style="font-size: 0.85rem; white-space: pre-wrap; margin:0;">${char.note}</p>
-            `;
-            list.appendChild(card);
-        });
-    }
-
-    function openCharModal(id = null) {
-        const char = data.characters.find(c => c.id === id) || { name: '', tag: '新設定', note: '' };
-        const modalContainer = document.getElementById('modal-container');
-        modalContainer.innerHTML = `
-            <div class="modal-overlay">
-                <div class="modal-content">
-                    <h3 style="color:var(--accent-color); margin-top:0;">Character Profile</h3>
-                    <div class="modal-field">
-                        <label>名前</label>
-                        <input type="text" id="edit-char-name" class="modal-input" value="${char.name}">
-                    </div>
-                    <div class="modal-field">
-                        <label>タグ</label>
-                        <input type="text" id="edit-char-tag" class="modal-input" value="${char.tag}">
-                    </div>
-                    <div class="modal-field">
-                        <label>設定メモ</label>
-                        <textarea id="edit-char-note" class="modal-textarea" rows="6">${char.note}</textarea>
-                    </div>
-                    <div style="display:flex; gap:10px;">
-                        <button class="btn-round" style="flex:1;" onclick="saveCharacter(${id})">保存</button>
-                        <button class="btn-round" style="flex:1; background:#ccc;" onclick="closeModal()">キャンセル</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    function closeModal() { document.getElementById('modal-container').innerHTML = ''; }
-
-    function saveCharacter(id) {
-        const name = document.getElementById('edit-char-name').value;
-        const tag = document.getElementById('edit-char-tag').value;
-        const note = document.getElementById('edit-char-note').value;
-        if (!name) return alert("名前を入力してください");
-        if (id) {
-            const char = data.characters.find(c => c.id === id);
-            char.name = name; char.tag = tag; char.note = note;
-        } else {
-            data.characters.push({ id: Date.now(), name, tag, note });
-        }
-        saveData(); closeModal(); renderSettings();
-    }
-
-    function deleteCharacter(id) {
-        if (confirm("削除してもよろしいですか？")) {
-            data.characters = data.characters.filter(c => c.id !== id);
-            saveData(); renderSettings();
-        }
-    }
-
-    // --- ② 構成画面 (二層構造) ---
-    function renderPlot() {
-        content.innerHTML = `
-            <h3 style="color: var(--accent-color);">Plot Construction</h3>
-            <div id="plot-list"></div>
-            <button class="btn-round" style="width:100%; margin-top:15px;" onclick="addPlot()">+ シーンを追加</button>
-        `;
-        const list = document.getElementById('plot-list');
-        data.plots.forEach(plot => {
-            const group = document.createElement('div');
-            group.className = 'plot-group';
-            group.dataset.id = plot.id;
-            group.innerHTML = `
-                <div class="plot-box">
-                    <span class="reorder-handle">☰</span>
-                    <input type="text" class="plot-input" value="${plot.text}" onchange="updatePlot(${plot.id}, this.value)">
-                    <button class="btn-small btn-delete" onclick="deletePlot(${plot.id})">×</button>
-                </div>
-                <div class="section-list" id="sections-${plot.id}"></div>
-                <button class="btn-small" style="margin-left:20px; color:var(--accent-color)" onclick="addSection(${plot.id})">+ 節を追加</button>
-            `;
-            list.appendChild(group);
-
-            const sectionList = document.getElementById(`sections-${plot.id}`);
-            plot.sections.forEach(sec => {
-                const sItem = document.createElement('div');
-                sItem.className = 'section-box';
-                sItem.dataset.id = sec.id;
-                sItem.innerHTML = `
-                    <span class="reorder-handle" style="font-size:0.8rem;">⁝⁝</span>
-                    <input type="text" class="plot-input" style="font-size:0.9rem;" value="${sec.text}" onchange="updateSection(${plot.id}, ${sec.id}, this.value)">
-                    <button class="btn-small btn-delete" onclick="deleteSection(${plot.id}, ${sec.id})">×</button>
-                `;
-                sectionList.appendChild(sItem);
-            });
-
-            new Sortable(sectionList, {
-                handle: '.reorder-handle',
-                animation: 150,
-                onEnd: () => {
-                    const newSecOrder = Array.from(sectionList.children).map(el => {
-                        return plot.sections.find(s => s.id == el.dataset.id);
-                    });
-                    plot.sections = newSecOrder;
-                    saveData();
-                }
-            });
-        });
-
-        new Sortable(list, {
-            handle: '.reorder-handle',
-            animation: 150,
-            onEnd: () => {
-                const newOrder = Array.from(list.children).map(el => {
-                    return data.plots.find(p => p.id == el.dataset.id);
-                });
-                data.plots = newOrder;
-                saveData();
-            }
-        });
-    }
-
-    // [修正] シーン追加時に自動で5つの節を追加するように変更
-    function addPlot() {
-        const newPlotId = Date.now();
-        const initialSections = [];
-        for (let i = 1; i <= 5; i++) {
-            initialSections.push({ 
-                id: newPlotId + i, 
-                text: `節${i}`, 
-                draft: '', 
-                final: '' 
-            });
-        }
-        data.plots.push({ id: newPlotId, text: '新しいシーン', sections: initialSections });
-        saveData(); renderPlot();
-    }
-
-    function updatePlot(id, val) {
-        data.plots.find(p => p.id === id).text = val;
-        saveData();
-    }
-
-    function deletePlot(id) {
-        if (confirm("シーン内のすべての節も削除されます。よろしいですか？")) {
-            data.plots = data.plots.filter(p => p.id !== id);
-            saveData(); renderPlot();
-        }
-    }
-
-    function addSection(plotId) {
-        const plot = data.plots.find(p => p.id === plotId);
-        plot.sections.push({ id: Date.now(), text: '新しい節', draft: '', final: '' });
-        saveData(); renderPlot();
-    }
-
-    function updateSection(plotId, secId, val) {
-        const plot = data.plots.find(p => p.id === plotId);
-        plot.sections.find(s => s.id === secId).text = val;
-        saveData();
-    }
-
-    function deleteSection(plotId, secId) {
-        const plot = data.plots.find(p => p.id === plotId);
-        plot.sections = plot.sections.filter(s => s.id !== secId);
-        saveData(); renderPlot();
-    }
-
-    // --- ③ 執筆画面 ---
-    function renderWriting() {
-        if (data.currentSectionId) {
-            renderEditor();
-        } else {
-            renderSectionSelector();
-        }
-    }
-
-    // 節の選択画面
-    function renderSectionSelector() {
-        if (!data.currentPlotId && data.plots.length > 0) {
-            data.currentPlotId = data.plots[0].id;
-        }
-
-        const currentPlot = data.plots.find(p => p.id == data.currentPlotId);
-        content.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h3 style="color: var(--accent-color); margin:0;">Writing</h3>
-                <button class="btn-round" style="padding: 5px 15px; font-size: 0.75rem;" onclick="copyAllFinalText()">本文を一括コピー</button>
-            </div>
-            <label style="font-size:0.7rem; color:var(--accent-color); font-weight:bold;">シーンを選択</label>
-            <select class="plot-selector" onchange="changeTargetPlot(this.value)">
-                ${data.plots.map(p => `<option value="${p.id}" ${p.id == data.currentPlotId ? 'selected' : ''}>${p.text}</option>`).join('')}
-            </select>
-
-            <div style="margin-top:20px;">
-                <label style="font-size:0.7rem; color:var(--accent-color); font-weight:bold;">節を選択して執筆開始</label>
-                <div id="writing-section-list" style="margin-top:10px;">
-                    ${currentPlot && currentPlot.sections.length > 0 ?
-                        currentPlot.sections.map(s => `
-                            <div class="writing-list-item" onclick="selectSection(${s.id})">
-                                <div style="font-weight:bold;">${s.text}</div>
-                                <div style="font-size:0.7rem; color:#999; margin-top:5px;">
-                                    Draft: ${s.draft.length}文字 / Final: ${s.final.length}文字
-                                </div>
-                            </div>
-                        `).join('') : 
-                        '<p style="font-size:0.8rem; color:#999;">構成モードで節を追加してください</p>'
-                    }
-                </div>
-            </div>
-        `;
-    }
-
-    // [追加] 本文一括コピー機能
-    function copyAllFinalText() {
-        let allText = "";
-        data.plots.forEach(plot => {
-            allText += `【${plot.text}】\n`;
-            plot.sections.forEach(sec => {
-                if (sec.final) {
-                    allText += `${sec.final}\n\n`;
-                }
-            });
-            allText += `\n`;
-        });
-
-        if (!allText.trim()) {
-            alert("コピーする本文がありません。");
-            return;
-        }
-
-        navigator.clipboard.writeText(allText).then(() => {
-            alert("全シーンの本文（FINAL）をコピーしました。");
-        }).catch(err => {
-            alert("コピーに失敗しました。");
-        });
-    }
-
-    // 実際のエディタ画面
-    function renderEditor() {
-        const plot = data.plots.find(p => p.id == data.currentPlotId);
-        const section = plot.sections.find(s => s.id == data.currentSectionId);
-
-        if (!section) {
-            data.currentSectionId = null;
-            renderWriting();
-            return;
-        }
-
-        content.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:10px;">
-                <button class="btn-small" onclick="backToSelector()" style="color:var(--accent-color)">← 戻る</button>
-                <button class="char-ref-btn" onclick="showCharRef()">設定を参照</button>
-            </div>
+        // セットの追加
+        function addSet(savedData = null) {
+            setCounter++;
+            const setId = `set-${setCounter}`;
+            const app = document.getElementById('app');
             
-            <div style="margin-bottom:15px;">
-                <div style="font-size:0.7rem; color:var(--accent-color);">${plot.text}</div>
-                <div style="font-size:1.1rem; font-weight:bold;">${section.text}</div>
-            </div>
-
-            <div id="char-ref-area" class="hidden"></div>
-
-            <div class="split-editor">
-                <div class="pane">
-                    <div class="pane-label">
-                        <span>DRAFT (アイディア)</span>
-                        <span id="count-draft" class="word-count">0文字</span>
+            const setHtml = `
+                <div class="shop-card" id="${setId}">
+                    <div class="shop-header">
+                        <input type="text" class="shop-title" placeholder="Shop Name" value="${savedData ? savedData.title : ''}">
+                        <button class="btn btn-remove" onclick="removeElement('${setId}')">Delete</button>
                     </div>
-                    <textarea class="draft-area" id="draft-text" placeholder="アイディアを自由に...">${section.draft || ''}</textarea>
-                </div>
-                <div class="pane">
-                    <div class="pane-label">
-                        <span>FINAL (本文)</span>
-                        <span id="count-final" class="word-count">0文字</span>
+
+                    <div class="bonus-badge">
+                        <span>特典条件:</span>
+                        <input type="number" class="bonus-unit" value="${savedData ? savedData.bonusUnit : 5000}" oninput="calculate('${setId}')">
+                        <span>円ごとに1個プレゼント</span>
                     </div>
-                    <textarea class="final-area" id="final-text" placeholder="本番の文章を書く...">${section.final || ''}</textarea>
-                </div>
-            </div>
-        `;
-        const draftEl = document.getElementById('draft-text');
-        const finalEl = document.getElementById('final-text');
 
-        const updateCounts = () => {
-            document.getElementById('count-draft').innerText = `${draftEl.value.length}文字`;
-            document.getElementById('count-final').innerText = `${finalEl.value.length}文字`;
-        };
-
-        const handleInput = () => {
-            section.draft = draftEl.value;
-            section.final = finalEl.value;
-            saveData();
-            updateCounts();
-        };
-
-        draftEl.addEventListener('input', handleInput);
-        finalEl.addEventListener('input', handleInput);
-        updateCounts();
-    }
-
-    function changeTargetPlot(id) {
-        data.currentPlotId = id;
-        data.currentSectionId = null;
-        saveData();
-        renderWriting();
-    }
-
-    function selectSection(id) {
-        data.currentSectionId = id;
-        saveData();
-        renderWriting();
-    }
-
-    function backToSelector() {
-        data.currentSectionId = null;
-        saveData();
-        renderWriting();
-    }
-
-    function showCharRef() {
-        const refArea = document.getElementById('char-ref-area');
-        refArea.classList.toggle('hidden');
-        if (!refArea.classList.contains('hidden')) {
-            refArea.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid var(--pink-accent); padding-bottom:5px;">
-                    <strong style="color:var(--accent-color)">Reference</strong>
-                    <span onclick="showCharRef()" style="cursor:pointer">× Close</span>
-                </div>
-                ${data.characters.length > 0 ? data.characters.map(c => `
-                    <div style="margin-bottom:10px;">
-                        <span class="tag">#${c.tag}</span> <b>${c.name}</b>
-                        <div style="font-size:0.8rem; color:#666; margin-top:3px;">${c.note}</div>
+                    <div class="item-list-header">
+                        <span>画像</span><span>商品名</span><span>単価</span><span>個数</span><span>小計</span><span></span>
                     </div>
-                `).join('<hr style="border:0; border-top:1px solid #eee; margin:8px 0;">') : '<p style="font-size:0.8rem; color:#999;">キャラクターが登録されていません</p>'}
+
+                    <div class="items-container" id="items-${setId}"></div>
+
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-add-item" onclick="addItem('${setId}')">+ 商品を追加</button>
+                        <button class="btn btn-duplicate" onclick="duplicateSet('${setId}')">セットを複製</button>
+                    </div>
+
+                    <div class="footer-summary">
+                        <div class="total-price">Total: ¥<span class="total-val">0</span></div>
+                        <div class="bonus-info">
+                            特典: <strong class="bonus-count">0</strong> 個獲得中<br>
+                            <small>（次の特典まであと ¥<span class="next-bonus">0</span>）</small>
+                        </div>
+                    </div>
+                </div>
             `;
+            
+            app.insertAdjacentHTML('beforeend', setHtml);
+
+            if (savedData && savedData.items) {
+                savedData.items.forEach(item => addItem(setId, item));
+            } else {
+                addItem(setId);
+            }
+            calculate(setId);
         }
-    }
 
-    // 初期表示
-    render('設定');
-</script>
+        // 商品行の追加
+        function addItem(setId, itemData = null) {
+            const container = document.getElementById(`items-${setId}`);
+            const itemRow = document.createElement('div');
+            itemRow.className = 'item-row';
+            
+            const randomId = Math.random().toString(36).substr(2, 9);
+            
+            itemRow.innerHTML = `
+                <label class="img-upload" id="label-${randomId}" style="background-image: url(${itemData?.img || ''})">
+                    ${itemData?.img ? '' : '+'}
+                    <input type="file" hidden accept="image/*" onchange="handleImage(this, 'label-${randomId}')">
+                </label>
+                <input type="text" class="p-name" placeholder="商品名" value="${itemData ? itemData.name : ''}" oninput="saveAll()">
+                <input type="number" class="p-price" placeholder="0" value="${itemData ? itemData.price : ''}" oninput="calculate('${setId}')">
+                <input type="number" class="p-qty" value="${itemData ? itemData.qty : 1}" oninput="calculate('${setId}')">
+                <div class="subtotal-text">¥0</div>
+                <button class="btn btn-remove" style="padding: 5px;" onclick="this.parentElement.remove(); calculate('${setId}')">✕</button>
+            `;
+            container.appendChild(itemRow);
+        }
 
+        // 画像プレビュー処理
+        function handleImage(input, labelId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const label = document.getElementById(labelId);
+                    label.style.backgroundImage = `url(${e.target.result})`;
+                    label.innerText = '';
+                    saveAll();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // 計算ロジック
+        function calculate(setId) {
+            const set = document.getElementById(setId);
+            const rows = set.querySelectorAll('.item-row');
+            let total = 0;
+
+            rows.forEach(row => {
+                const price = parseFloat(row.querySelector('.p-price').value) || 0;
+                const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
+                const sub = price * qty;
+                row.querySelector('.subtotal-text').textContent = `¥${sub.toLocaleString()}`;
+                total += sub;
+            });
+
+            const unit = parseFloat(set.querySelector('.bonus-unit').value) || 1;
+            const count = Math.floor(total / unit);
+            const next = unit - (total % unit);
+
+            set.querySelector('.total-val').textContent = total.toLocaleString();
+            set.querySelector('.bonus-count').textContent = count;
+            set.querySelector('.next-bonus').textContent = next.toLocaleString();
+            
+            saveAll();
+        }
+
+        // 複製機能
+        function duplicateSet(setId) {
+            const set = document.getElementById(setId);
+            const data = {
+                title: set.querySelector('.shop-title').value + " (Copy)",
+                bonusUnit: set.querySelector('.bonus-unit').value,
+                items: []
+            };
+            set.querySelectorAll('.item-row').forEach(row => {
+                data.items.push({
+                    img: row.querySelector('.img-upload').style.backgroundImage.slice(5, -2),
+                    name: row.querySelector('.p-name').value,
+                    price: row.querySelector('.p-price').value,
+                    qty: row.querySelector('.p-qty').value
+                });
+            });
+            addSet(data);
+        }
+
+        function removeElement(id) {
+            if(confirm('このセットを削除してもよろしいですか？')) {
+                document.getElementById(id).remove();
+                saveAll();
+            }
+        }
+
+        // ローカルストレージへの自動保存
+        function saveAll() {
+            const allData = [];
+            document.querySelectorAll('.shop-card').forEach(set => {
+                const items = [];
+                set.querySelectorAll('.item-row').forEach(row => {
+                    items.push({
+                        img: row.querySelector('.img-upload').style.backgroundImage.slice(5, -2).replace(/"/g, ""),
+                        name: row.querySelector('.p-name').value,
+                        price: row.querySelector('.p-price').value,
+                        qty: row.querySelector('.p-qty').value
+                    });
+                });
+                allData.push({
+                    title: set.querySelector('.shop-title').value,
+                    bonusUnit: set.querySelector('.bonus-unit').value,
+                    items: items
+                });
+            });
+            localStorage.setItem('shoppingAppData', JSON.stringify(allData));
+        }
+
+        // 読み込み
+        function loadAll() {
+            const data = JSON.parse(localStorage.getItem('shoppingAppData'));
+            if (data && data.length > 0) {
+                data.forEach(d => addSet(d));
+            } else {
+                addSet();
+            }
+        }
+
+        window.onload = loadAll;
+    </script>
 </body>
 </html>
