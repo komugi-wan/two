@@ -2,17 +2,32 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dusky Pink Shopping Calc</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#d4a3a3">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <title>Dusky Pink Shopping Calc | Atelier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --main-pink: #d4a3a3; /* くすみピンク */
+            --main-pink: #d4a3a3;
+            --main-pink-dark: #b88686;
             --soft-pink: #e9d5d5;
             --light-pink: #fdf8f8;
             --accent-gold: #b8944d;
+            --accent-gold-light: #fdf5e6;
             --text-color: #5a4a4a;
+            --text-light: #8e8282;
             --white: #ffffff;
+            --danger: #e57373;
+            --archive-color: #9e9e9e;
+            --shadow: 0 10px 30px rgba(212, 163, 163, 0.12);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
@@ -20,101 +35,207 @@
             background-color: var(--light-pink);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 20px 15px;
             line-height: 1.6;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 120px;
         }
 
+        /* ヘッダーデザイン */
         .header-title {
             text-align: center;
             font-family: 'Playfair Display', serif;
             color: var(--main-pink);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin: 20px 0 10px 0;
             letter-spacing: 3px;
+            font-style: italic;
+        }
+
+        .header-subtitle {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* タブメニュー */
+        .tab-menu {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(212, 163, 163, 0.1);
+            padding: 5px;
+            border-radius: 50px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 8px 20px;
+            border-radius: 40px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            background: var(--white);
+            color: var(--main-pink);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .container {
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
-        /* セット（店舗）のカード */
+        /* ショップカード */
         .shop-card {
             background: var(--white);
-            border-radius: 25px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 15px 35px rgba(212, 163, 163, 0.15);
-            border: 1px solid rgba(184, 148, 77, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             position: relative;
+            transition: var(--transition);
         }
 
         .shop-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            gap: 12px;
         }
 
         .shop-title {
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             border: none;
-            border-bottom: 2px solid var(--soft-pink);
-            color: var(--main-pink);
-            width: 60%;
-            padding: 5px;
+            border-bottom: 2px solid var(--light-pink);
+            color: var(--text-color);
+            flex-grow: 1;
+            padding: 8px 0;
             outline: none;
-            font-weight: 500;
+            font-weight: 700;
+            background: transparent;
+            transition: border-color 0.3s;
+        }
+
+        .shop-title:focus {
+            border-bottom-color: var(--main-pink);
         }
 
         /* 特典設定エリア */
+        .bonus-settings-container {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .bonus-badge {
-            background: var(--light-pink);
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            background: var(--accent-gold-light);
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
             border-left: 4px solid var(--accent-gold);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 8px;
+            color: var(--accent-gold);
+            position: relative;
         }
 
-        /* 商品テーブル風レイアウト */
-        .item-list-header {
-            display: grid;
-            grid-template-columns: 60px 2fr 1fr 80px 100px 40px;
-            gap: 10px;
-            font-size: 0.8rem;
-            color: var(--main-pink);
-            margin-bottom: 10px;
-            padding: 0 10px;
+        .bonus-unit {
+            width: 80px !important;
+            text-align: center;
+            font-weight: 700;
+            border: 1px solid rgba(184, 148, 77, 0.2) !important;
+            background: var(--white);
+            color: var(--accent-gold) !important;
+            padding: 5px !important;
+        }
+
+        .btn-add-bonus {
+            background: var(--accent-gold-light);
+            color: var(--accent-gold);
+            border: 1px dashed var(--accent-gold);
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .btn-remove-bonus {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
             font-weight: bold;
+            font-size: 1rem;
+            padding: 0 5px;
         }
 
+        /* 商品行：グリッド */
         .item-row {
             display: grid;
-            grid-template-columns: 60px 2fr 1fr 80px 100px 40px;
+            grid-template-columns: 80px 1fr 1fr 40px;
+            grid-template-areas: 
+                "img name name del"
+                "img price qty del"
+                "img subtotal subtotal subtotal";
             gap: 10px;
             align-items: center;
-            background: var(--white);
-            padding: 12px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            transition: 0.2s;
+            background: var(--light-pink);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
             border: 1px solid transparent;
+            transition: var(--transition);
         }
 
-        .item-row:hover {
+        .item-row:focus-within {
             border-color: var(--soft-pink);
+            background: var(--white);
+            box-shadow: 0 4px 15px rgba(212, 163, 163, 0.1);
         }
+
+        .img-upload { grid-area: img; align-self: center; }
+        .p-name { grid-area: name; font-weight: 700; }
+        .p-price-wrap { grid-area: price; display: flex; align-items: center; gap: 6px; }
+        .p-qty-wrap { grid-area: qty; display: flex; align-items: center; gap: 6px; }
+        .subtotal-text { 
+            grid-area: subtotal; 
+            text-align: right; 
+            font-size: 0.8rem; 
+            color: var(--accent-gold); 
+            font-weight: 700; 
+            padding-top: 8px;
+            margin-top: 4px;
+            border-top: 1px dashed var(--soft-pink);
+        }
+        .btn-remove-row { grid-area: del; align-self: center; }
 
         /* 画像アップロード */
         .img-upload {
-            width: 50px;
-            height: 50px;
-            border: 1px dashed var(--soft-pink);
-            border-radius: 10px;
+            width: 80px;
+            height: 80px;
+            border: 2px dashed var(--soft-pink);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,170 +243,448 @@
             overflow: hidden;
             background-size: cover;
             background-position: center;
-            font-size: 0.7rem;
-            color: var(--soft-pink);
+            font-size: 1.5rem;
+            color: var(--main-pink);
+            background-color: var(--white);
+            transition: var(--transition);
+        }
+
+        .img-upload:hover {
+            border-color: var(--main-pink);
+            background-color: var(--light-pink);
         }
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            border: 1px solid #f0f0f0;
-            border-radius: 8px;
-            padding: 8px;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 10px;
+            padding: 10px;
             box-sizing: border-box;
             color: var(--text-color);
+            font-size: 16px;
+            transition: var(--transition);
         }
 
-        .subtotal-text {
-            text-align: right;
-            color: var(--accent-gold);
-            font-weight: 500;
+        input:focus {
+            outline: none;
+            border-color: var(--main-pink);
+            background-color: var(--white);
         }
 
         /* 合計エリア */
         .footer-summary {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: right;
-            border-top: 1px solid var(--light-pink);
+            border-top: 2px solid var(--light-pink);
             padding-top: 20px;
         }
 
         .total-price {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--main-pink);
             font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        .bonus-info-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         .bonus-info {
             color: var(--accent-gold);
-            font-size: 1rem;
-            margin-top: 5px;
+            font-size: 0.85rem;
+            background: var(--accent-gold-light);
+            padding: 12px 18px;
+            border-radius: 12px;
+            display: inline-block;
+            line-height: 1.5;
+            text-align: left;
+            width: fit-content;
         }
 
-        /* ボタン */
+        .next-bonus { font-weight: 700; color: var(--danger); }
+
+        /* ボタン群 */
         .btn {
             cursor: pointer;
             border: none;
-            border-radius: 30px;
-            padding: 10px 20px;
-            transition: all 0.3s;
+            border-radius: 12px;
+            padding: 10px 18px;
+            transition: var(--transition);
             font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
-        .btn-add-item { background: var(--soft-pink); color: var(--text-color); }
-        .btn-duplicate { background: var(--white); border: 1px solid var(--main-pink); color: var(--main-pink); }
-        .btn-remove { background: #fdf1f1; color: #d4a3a3; }
+        .btn-add-item { background: var(--main-pink); color: white; flex: 2; height: 48px; font-weight: 700; }
+        .btn-duplicate { background: var(--white); border: 1.5px solid var(--main-pink); color: var(--main-pink); flex: 1; height: 48px; }
+        .btn-archive { background: #f5f5f5; color: var(--archive-color); font-size: 0.75rem; }
+        .btn-remove { background: #fff5f5; color: var(--danger); font-size: 0.75rem; }
+        
         .btn-main-add { 
-            background: var(--main-pink); color: white; 
-            padding: 15px 40px; font-size: 1.1rem; 
-            display: block; margin: 30px auto;
-            box-shadow: 0 10px 20px rgba(212, 163, 163, 0.3);
+            background: var(--text-color); color: white; 
+            padding: 18px 30px; font-size: 1rem; 
+            position: fixed; bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            width: 85%; max-width: 340px;
+            box-shadow: 0 10px 25px rgba(90, 74, 74, 0.3);
+            z-index: 100;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+        .btn:active { transform: scale(0.95); }
+        .btn-add-item:hover { background: var(--main-pink-dark); }
+
+        /* カスタムモーダル */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(90, 74, 74, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 85%;
+            max-width: 320px;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--main-pink);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .modal-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-modal-cancel { background: var(--light-pink); color: var(--text-light); flex: 1; }
+        .btn-modal-confirm { background: var(--danger); color: white; flex: 1; }
+
+        /* スクロール時の挙動 */
+        .hidden { display: none !important; }
+
+        /* アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .shop-card { animation: fadeIn 0.4s ease-out; }
 
     </style>
 </head>
 <body>
 
     <div class="header-title">Shopping Atelier</div>
+    <div class="header-subtitle">— Curate Your Collection —</div>
 
-    <div id="app" class="container">
+    <div class="tab-menu">
+        <button class="tab-btn active" id="tab-main" onclick="switchTab('main')">Current</button>
+        <button class="tab-btn" id="tab-archive" onclick="switchTab('archive')">Archive</button>
+    </div>
+
+    <div id="app" class="container"></div>
+
+    <button id="add-shop-btn" class="btn btn-main-add" onclick="addSet()">+ Create New Shop</button>
+
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">Remove Item</div>
+            <div class="modal-text">この商品をリストから削除しますか？</div>
+            <div class="modal-btns">
+                <button class="btn btn-modal-cancel" onclick="closeModal()">キャンセル</button>
+                <button class="btn btn-modal-confirm" id="confirm-delete-btn">削除する</button>
+            </div>
         </div>
-
-    <button class="btn btn-main-add" onclick="addSet()">+ Add New Shop</button>
+    </div>
 
     <script>
-        let setCounter = 0;
+        /**
+         * PWA: Service Worker Registration
+         */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.error('Service Worker registration failed', err));
+            });
+        }
 
-        // セットの追加
+        /**
+         * 構成定数とグローバルステート
+         */
+        let setCounter = 0;
+        let currentTab = 'main'; 
+        const DB_NAME = 'ShoppingAppDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'shoppingData';
+        let saveTimeout = null; // デバウンス用
+        let itemToDelete = null; // 削除対象の一時保持
+        let currentSetId = null; // 削除対象セットの保持
+
+        /**
+         * IndexedDB 操作のプロミス化
+         */
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                request.onsuccess = (e) => resolve(e.target.result);
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        /**
+         * タブ切り替え制御
+         */
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-main').classList.toggle('active', tab === 'main');
+            document.getElementById('tab-archive').classList.toggle('active', tab === 'archive');
+            document.getElementById('add-shop-btn').classList.toggle('hidden', tab === 'archive');
+            renderAll();
+        }
+
+        /**
+         * 表示フィルタリング
+         */
+        function renderAll() {
+            const cards = document.querySelectorAll('.shop-card');
+            cards.forEach(card => {
+                const isArchived = card.getAttribute('data-archived') === 'true';
+                if (currentTab === 'main') {
+                    card.classList.toggle('hidden', isArchived);
+                } else {
+                    card.classList.toggle('hidden', !isArchived);
+                }
+            });
+        }
+
+        /**
+         * アーカイブ状態のトグル
+         */
+        function toggleArchive(setId) {
+            const el = document.getElementById(setId);
+            if (!el) return;
+            const isArchived = el.getAttribute('data-archived') === 'true';
+            el.setAttribute('data-archived', !isArchived);
+            
+            const btn = el.querySelector('.btn-archive');
+            btn.innerText = !isArchived ? '復元' : 'アーカイブ';
+            
+            debouncedSave();
+            renderAll();
+        }
+
+        /**
+         * 新規ショップセットの追加
+         */
         function addSet(savedData = null) {
             setCounter++;
             const setId = `set-${setCounter}`;
             const app = document.getElementById('app');
+            const isArchived = savedData ? !!savedData.isArchived : false;
             
             const setHtml = `
-                <div class="shop-card" id="${setId}">
+                <div class="shop-card" id="${setId}" data-archived="${isArchived}">
                     <div class="shop-header">
-                        <input type="text" class="shop-title" placeholder="Shop Name" value="${savedData ? savedData.title : ''}">
-                        <button class="btn btn-remove" onclick="removeElement('${setId}')">Delete</button>
+                        <input type="text" class="shop-title" placeholder="Shop Name" value="${savedData ? savedData.title : ''}" oninput="debouncedSave()">
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-archive" onclick="toggleArchive('${setId}')">${isArchived ? '復元' : 'アーカイブ'}</button>
+                            <button class="btn btn-remove" onclick="removeElement('${setId}')">✕</button>
+                        </div>
                     </div>
 
-                    <div class="bonus-badge">
-                        <span>特典条件:</span>
-                        <input type="number" class="bonus-unit" value="${savedData ? savedData.bonusUnit : 5000}" oninput="calculate('${setId}')">
-                        <span>円ごとに1個プレゼント</span>
-                    </div>
-
-                    <div class="item-list-header">
-                        <span>画像</span><span>商品名</span><span>単価</span><span>個数</span><span>小計</span><span></span>
-                    </div>
+                    <div class="bonus-settings-container" id="bonus-container-${setId}"></div>
+                    <button class="btn-add-bonus" onclick="addBonusSetting('${setId}')">＋ 特典設定を追加</button>
 
                     <div class="items-container" id="items-${setId}"></div>
 
-                    <div style="margin-top: 20px; display: flex; gap: 10px;">
-                        <button class="btn btn-add-item" onclick="addItem('${setId}')">+ 商品を追加</button>
-                        <button class="btn btn-duplicate" onclick="duplicateSet('${setId}')">セットを複製</button>
+                    <div style="margin-top: 20px; display: flex; gap: 12px;">
+                        <button class="btn btn-add-item" onclick="addItem('${setId}')">＋ 商品を追加</button>
+                        <button class="btn btn-duplicate" onclick="duplicateSet('${setId}')">複製</button>
                     </div>
 
                     <div class="footer-summary">
                         <div class="total-price">Total: ¥<span class="total-val">0</span></div>
-                        <div class="bonus-info">
-                            特典: <strong class="bonus-count">0</strong> 個獲得中<br>
-                            <small>（次の特典まであと ¥<span class="next-bonus">0</span>）</small>
-                        </div>
+                        <div class="bonus-info-container" id="bonus-info-list-${setId}"></div>
                     </div>
                 </div>
             `;
             
             app.insertAdjacentHTML('beforeend', setHtml);
 
-            if (savedData && savedData.items) {
+            // 特典設定の復元
+            if (savedData && savedData.bonusUnits) {
+                savedData.bonusUnits.forEach(unit => addBonusSetting(setId, unit));
+            } else if (savedData && savedData.bonusUnit) {
+                // 以前のデータ構造（単一数値）との互換性
+                addBonusSetting(setId, savedData.bonusUnit);
+            } else {
+                addBonusSetting(setId, 5000);
+            }
+
+            // 商品の復元
+            const itemsContainer = document.getElementById(`items-${setId}`);
+            if (savedData && savedData.items && savedData.items.length > 0) {
                 savedData.items.forEach(item => addItem(setId, item));
             } else {
                 addItem(setId);
             }
             calculate(setId);
+            renderAll();
         }
 
-        // 商品行の追加
+        /**
+         * 特典設定行の追加
+         */
+        function addBonusSetting(setId, unitValue = 5000) {
+            const container = document.getElementById(`bonus-container-${setId}`);
+            const bonusDiv = document.createElement('div');
+            bonusDiv.className = 'bonus-badge';
+            bonusDiv.innerHTML = `
+                <span>特典:</span>
+                <input type="number" inputmode="numeric" class="bonus-unit" value="${unitValue}" oninput="calculate('${setId}')">
+                <span>円ごと</span>
+                <button class="btn-remove-bonus" onclick="removeBonusSetting(this, '${setId}')">✕</button>
+            `;
+            container.appendChild(bonusDiv);
+            calculate(setId);
+        }
+
+        function removeBonusSetting(btn, setId) {
+            btn.parentElement.remove();
+            calculate(setId);
+        }
+
+        /**
+         * 商品行の追加
+         */
         function addItem(setId, itemData = null) {
             const container = document.getElementById(`items-${setId}`);
+            if(!container) return;
             const itemRow = document.createElement('div');
             itemRow.className = 'item-row';
             
             const randomId = Math.random().toString(36).substr(2, 9);
-            
+            const bgStyle = itemData?.img ? `background-image: url(${itemData.img}); border-style: solid;` : '';
+
             itemRow.innerHTML = `
-                <label class="img-upload" id="label-${randomId}" style="background-image: url(${itemData?.img || ''})">
+                <label class="img-upload" id="label-${randomId}" style="${bgStyle}">
                     ${itemData?.img ? '' : '+'}
                     <input type="file" hidden accept="image/*" onchange="handleImage(this, 'label-${randomId}')">
                 </label>
-                <input type="text" class="p-name" placeholder="商品名" value="${itemData ? itemData.name : ''}" oninput="saveAll()">
-                <input type="number" class="p-price" placeholder="0" value="${itemData ? itemData.price : ''}" oninput="calculate('${setId}')">
-                <input type="number" class="p-qty" value="${itemData ? itemData.qty : 1}" oninput="calculate('${setId}')">
-                <div class="subtotal-text">¥0</div>
-                <button class="btn btn-remove" style="padding: 5px;" onclick="this.parentElement.remove(); calculate('${setId}')">✕</button>
+                <input type="text" class="p-name" placeholder="商品名" value="${itemData ? itemData.name : ''}" oninput="debouncedSave()">
+                <div class="p-price-wrap">
+                    <span style="font-size:0.75rem; color:var(--main-pink); font-weight:bold">¥</span>
+                    <input type="number" inputmode="numeric" class="p-price" placeholder="単価" value="${itemData ? itemData.price : ''}" oninput="calculate('${setId}')">
+                </div>
+                <div class="p-qty-wrap">
+                    <span style="font-size:0.75rem; color:var(--main-pink); font-weight:bold">Qty</span>
+                    <input type="number" inputmode="numeric" class="p-qty" value="${itemData ? itemData.qty : 1}" oninput="calculate('${setId}')">
+                </div>
+                <div class="subtotal-text">Subtotal: ¥0</div>
+                <button class="btn btn-remove btn-remove-row" style="padding: 10px; min-width:36px;" onclick="confirmRemoveRow(this, '${setId}')">✕</button>
             `;
             container.appendChild(itemRow);
+            calculate(setId);
         }
 
-        // 画像プレビュー処理
+        /**
+         * モーダル制御
+         */
+        function confirmRemoveRow(btn, setId) {
+            itemToDelete = btn.parentElement;
+            currentSetId = setId;
+            const modal = document.getElementById('delete-modal');
+            modal.classList.add('active');
+            
+            document.getElementById('confirm-delete-btn').onclick = function() {
+                if (itemToDelete) {
+                    itemToDelete.remove();
+                    calculate(currentSetId);
+                    closeModal();
+                }
+            };
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('delete-modal');
+            modal.classList.remove('active');
+            itemToDelete = null;
+            currentSetId = null;
+        }
+
+        /**
+         * 画像のBase64処理
+         */
         function handleImage(input, labelId) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const label = document.getElementById(labelId);
-                    label.style.backgroundImage = `url(${e.target.result})`;
-                    label.innerText = '';
-                    saveAll();
+                    if (label) {
+                        label.style.backgroundImage = `url(${e.target.result})`;
+                        label.style.borderStyle = 'solid';
+                        label.innerText = '';
+                        debouncedSave();
+                    }
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // 計算ロジック
+        /**
+         * 計算ロジックの集中管理
+         */
         function calculate(setId) {
             const set = document.getElementById(setId);
+            if (!set) return;
             const rows = set.querySelectorAll('.item-row');
             let total = 0;
 
@@ -293,32 +692,58 @@
                 const price = parseFloat(row.querySelector('.p-price').value) || 0;
                 const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
                 const sub = price * qty;
-                row.querySelector('.subtotal-text').textContent = `¥${sub.toLocaleString()}`;
+                row.querySelector('.subtotal-text').textContent = `Subtotal: ¥${sub.toLocaleString()}`;
                 total += sub;
             });
 
-            const unit = parseFloat(set.querySelector('.bonus-unit').value) || 1;
-            const count = Math.floor(total / unit);
-            const next = unit - (total % unit);
-
             set.querySelector('.total-val').textContent = total.toLocaleString();
-            set.querySelector('.bonus-count').textContent = count;
-            set.querySelector('.next-bonus').textContent = next.toLocaleString();
+
+            // 特典計算（複数対応）
+            const unitInputs = set.querySelectorAll('.bonus-unit');
+            const infoListContainer = document.getElementById(`bonus-info-list-${setId}`);
+            infoListContainer.innerHTML = '';
+
+            unitInputs.forEach(input => {
+                const unit = parseFloat(input.value) || 0;
+                if (unit <= 0) return;
+
+                const count = Math.floor(total / unit);
+                const remainder = total % unit;
+                let next = (remainder === 0 && total > 0) ? 0 : unit - remainder;
+                if (total === 0) next = unit;
+
+                const infoBox = document.createElement('div');
+                infoBox.className = 'bonus-info';
+                infoBox.innerHTML = `
+                    特典(¥${unit.toLocaleString()}): <strong class="bonus-count" style="font-size:1.2rem; color:var(--main-pink)">${count}</strong> 個獲得中<br>
+                    次まであと <span class="next-bonus">¥<span class="next-bonus-val">${next.toLocaleString()}</span></span>
+                `;
+                infoListContainer.appendChild(infoBox);
+            });
             
-            saveAll();
+            debouncedSave();
         }
 
-        // 複製機能
+        /**
+         * ショップセットの複製
+         */
         function duplicateSet(setId) {
             const set = document.getElementById(setId);
+            if (!set) return;
+            
+            const bonusUnits = [];
+            set.querySelectorAll('.bonus-unit').forEach(input => bonusUnits.push(input.value));
+
             const data = {
                 title: set.querySelector('.shop-title').value + " (Copy)",
-                bonusUnit: set.querySelector('.bonus-unit').value,
+                bonusUnits: bonusUnits,
+                isArchived: false,
                 items: []
             };
             set.querySelectorAll('.item-row').forEach(row => {
+                const bgImg = row.querySelector('.img-upload').style.backgroundImage;
                 data.items.push({
-                    img: row.querySelector('.img-upload').style.backgroundImage.slice(5, -2),
+                    img: bgImg ? bgImg.slice(5, -2).replace(/"/g, "") : "",
                     name: row.querySelector('.p-name').value,
                     price: row.querySelector('.p-price').value,
                     qty: row.querySelector('.p-qty').value
@@ -327,46 +752,99 @@
             addSet(data);
         }
 
+        /**
+         * 要素の削除
+         */
         function removeElement(id) {
-            if(confirm('このセットを削除してもよろしいですか？')) {
-                document.getElementById(id).remove();
-                saveAll();
+            if(confirm('このショップを削除してもよろしいですか？')) {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.remove();
+                    debouncedSave();
+                }
             }
         }
 
-        // ローカルストレージへの自動保存
-        function saveAll() {
+        /**
+         * パフォーマンス向上のためのデバウンス保存
+         */
+        function debouncedSave() {
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                saveAll();
+            }, 500);
+        }
+
+        /**
+         * データの永続化
+         */
+        async function saveAll() {
             const allData = [];
-            document.querySelectorAll('.shop-card').forEach(set => {
+            const cards = document.querySelectorAll('.shop-card');
+            
+            cards.forEach(set => {
                 const items = [];
                 set.querySelectorAll('.item-row').forEach(row => {
+                    const bgImg = row.querySelector('.img-upload').style.backgroundImage;
                     items.push({
-                        img: row.querySelector('.img-upload').style.backgroundImage.slice(5, -2).replace(/"/g, ""),
+                        img: bgImg ? bgImg.slice(5, -2).replace(/"/g, "") : "",
                         name: row.querySelector('.p-name').value,
                         price: row.querySelector('.p-price').value,
                         qty: row.querySelector('.p-qty').value
                     });
                 });
+
+                const bonusUnits = [];
+                set.querySelectorAll('.bonus-unit').forEach(input => bonusUnits.push(input.value));
+
                 allData.push({
                     title: set.querySelector('.shop-title').value,
-                    bonusUnit: set.querySelector('.bonus-unit').value,
+                    bonusUnits: bonusUnits,
+                    isArchived: set.getAttribute('data-archived') === 'true',
                     items: items
                 });
             });
-            localStorage.setItem('shoppingAppData', JSON.stringify(allData));
+
+            try {
+                const db = await openDB();
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                store.put(allData, 'currentAppData');
+            } catch (e) {
+                console.error("Save failed", e);
+            }
         }
 
-        // 読み込み
-        function loadAll() {
-            const data = JSON.parse(localStorage.getItem('shoppingAppData'));
-            if (data && data.length > 0) {
-                data.forEach(d => addSet(d));
-            } else {
+        /**
+         * データの初期読み込み
+         */
+        async function loadAll() {
+            try {
+                const db = await openDB();
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const request = store.get('currentAppData');
+
+                request.onsuccess = () => {
+                    const data = request.result;
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        data.forEach(d => addSet(d));
+                    } else {
+                        addSet();
+                    }
+                    renderAll();
+                };
+                
+                request.onerror = () => {
+                    addSet();
+                };
+            } catch (e) {
                 addSet();
             }
         }
 
-        window.onload = loadAll;
+        // ページロード時に実行
+        window.addEventListener('DOMContentLoaded', loadAll);
     </script>
 </body>
 </html>
