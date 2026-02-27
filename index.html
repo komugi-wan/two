@@ -9,12 +9,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     
-    <title>Dusky Pink Shopping Calc | Atelier</title>
+    <title>Dusky Pink Shopping Calc |
+Atelier</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
             --main-pink: #d4a3a3;
-            --main-pink-dark: #b88686;
+--main-pink-dark: #b88686;
             --soft-pink: #e9d5d5;
             --light-pink: #fdf8f8;
             --accent-gold: #b8944d;
@@ -24,63 +25,63 @@
             --white: #ffffff;
             --danger: #e57373;
             --archive-color: #9e9e9e;
-            --shadow: 0 10px 30px rgba(212, 163, 163, 0.12);
+--shadow: 0 10px 30px rgba(212, 163, 163, 0.12);
             --radius-lg: 24px;
             --radius-md: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+}
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            background-color: var(--light-pink);
+background-color: var(--light-pink);
             color: var(--text-color);
             margin: 0;
             padding: 20px 15px;
             line-height: 1.6;
             -webkit-tap-highlight-color: transparent;
             padding-bottom: 60px;
-        }
+}
 
         .header-title {
             text-align: center;
-            font-family: 'Playfair Display', serif;
+font-family: 'Playfair Display', serif;
             color: var(--main-pink);
             font-size: 2.2rem;
             margin: 20px 0 10px 0;
             letter-spacing: 3px;
             font-style: italic;
-        }
+}
 
         .header-subtitle {
             text-align: center;
-            font-size: 0.75rem;
+font-size: 0.75rem;
             color: var(--text-light);
             letter-spacing: 0.1em;
             margin-bottom: 30px;
             text-transform: uppercase;
-        }
+}
 
         .tab-wrapper {
             display: flex;
-            justify-content: center;
+justify-content: center;
             align-items: center;
             gap: 12px;
             margin-bottom: 30px;
             max-width: 400px;
             margin-left: auto;
             margin-right: auto;
-        }
+}
 
         .tab-menu {
             display: flex;
-            background: rgba(212, 163, 163, 0.1);
+background: rgba(212, 163, 163, 0.1);
             padding: 5px;
             border-radius: 50px;
         }
 
         .tab-btn {
             background: none;
-            border: none;
+border: none;
             color: var(--text-light);
             font-size: 0.85rem;
             cursor: pointer;
@@ -88,17 +89,17 @@
             border-radius: 40px;
             transition: var(--transition);
             font-weight: 500;
-        }
+}
 
         .tab-btn.active {
             background: var(--white);
-            color: var(--main-pink);
+color: var(--main-pink);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .btn-main-add { 
             background: var(--main-pink);
-            color: white; 
+color: white; 
             border: none;
             width: 38px;
             height: 38px;
@@ -108,47 +109,47 @@
             justify-content: center;
             font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(212, 163, 163, 0.3);
+box-shadow: 0 4px 10px rgba(212, 163, 163, 0.3);
             transition: var(--transition);
             flex-shrink: 0;
-        }
+}
 
         .container {
             max-width: 600px;
-            margin: 0 auto;
+margin: 0 auto;
         }
 
         .shop-card {
             background: var(--white);
-            border-radius: var(--radius-lg);
+border-radius: var(--radius-lg);
             padding: 24px;
             margin-bottom: 30px;
             box-shadow: var(--shadow);
             border: 1px solid rgba(255, 255, 255, 0.8);
             position: relative;
             transition: var(--transition);
-        }
+}
 
         /* --- スティッキーヘッダー修正版 --- */
         .shop-sticky-header {
             position: -webkit-sticky;
-            position: sticky;
+position: sticky;
             top: -1px; 
             z-index: 100;
             background: transparent; 
             margin: -24px -24px 20px -24px;
             padding: 24px 24px 15px 24px;
-            /* 下線の色を調整 */
+/* 下線の色を調整 */
             border-bottom: 1px solid rgba(212, 163, 163, 0.1);
-        }
+}
 
         /* ステップ2：背面レイヤー（隙間を埋めるために少し広げる） */
         .shop-sticky-header::before {
             content: "";
-            position: absolute;
+position: absolute;
             top: -2px; /* 1px広げて隙間を防止 */
             left: -2px;
-            right: -2px;
+right: -2px;
             bottom: 0;
             background-color: var(--light-pink);
             z-index: -2;
@@ -157,7 +158,7 @@
         /* ステップ3：表面レイヤー（カードの白・角丸） */
         .shop-sticky-header::after {
             content: "";
-            position: absolute;
+position: absolute;
             top: 0;
             left: 0;
             right: 0;
@@ -165,17 +166,17 @@
             background-color: var(--white);
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             z-index: -1;
-        }
+}
 
         .shop-header, .header-summary-row {
             position: relative;
-            z-index: 1;
+z-index: 1;
         }
         /* --------------------------------------------- */
 
         .shop-header {
             display: flex;
-            justify-content: space-between;
+justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
             gap: 10px;
@@ -183,7 +184,7 @@
 
         .shop-title {
             font-size: 1.15rem;
-            border: none;
+border: none;
             border-bottom: 2px solid var(--light-pink);
             color: var(--text-color);
             flex-grow: 1;
@@ -191,44 +192,44 @@
             outline: none;
             font-weight: 700;
             background: transparent;
-            transition: border-color 0.3s;
+transition: border-color 0.3s;
         }
 
         .shop-title:focus {
             border-bottom-color: var(--main-pink);
-        }
+}
 
         .header-summary-row {
             display: flex;
-            justify-content: space-between;
+justify-content: space-between;
             align-items: baseline;
         }
         
         .header-total-qty {
             font-size: 0.8rem;
-            color: var(--text-light);
+color: var(--text-light);
             font-weight: 500;
         }
 
         .header-total-price {
             font-size: 1.4rem;
-            color: var(--main-pink);
+color: var(--main-pink);
             font-family: 'Playfair Display', serif;
             font-weight: 700;
         }
 
         .bonus-settings-list {
             display: flex;
-            flex-direction: column;
+flex-direction: column;
             gap: 10px;
             max-height: 300px;
             overflow-y: auto;
             margin-bottom: 20px;
-        }
+}
 
         .bonus-badge {
             background: var(--accent-gold-light);
-            padding: 10px;
+padding: 10px;
             border-radius: var(--radius-md);
             border-left: 4px solid var(--accent-gold);
             font-size: 0.85rem;
@@ -237,21 +238,21 @@
             justify-content: space-between;
             gap: 8px;
             color: var(--accent-gold);
-        }
+}
 
         .bonus-unit {
             width: 80px !important;
-            text-align: center;
+text-align: center;
             font-weight: 700;
             border: 1px solid rgba(184, 148, 77, 0.2) !important;
             background: var(--white);
             color: var(--accent-gold) !important;
             padding: 5px !important;
-        }
+}
 
         .btn-add-bonus-in-modal {
             background: var(--accent-gold-light);
-            color: var(--accent-gold);
+color: var(--accent-gold);
             border: 1px dashed var(--accent-gold);
             padding: 10px;
             border-radius: 10px;
@@ -259,45 +260,45 @@
             cursor: pointer;
             width: 100%;
             font-weight: 600;
-        }
+}
 
         .btn-remove-bonus {
             background: none;
-            border: none;
+border: none;
             color: var(--danger);
             cursor: pointer;
             font-weight: bold;
             font-size: 1.1rem;
             padding: 0 5px;
-        }
+}
 
         .item-row {
             display: grid;
-            grid-template-columns: 80px 1fr 1fr;
+grid-template-columns: 70px 1fr 1fr;
             grid-template-areas: 
                 "img name name"
                 "img price qty"
                 "img memo subtotal";
-            gap: 10px;
+gap: 8px 10px;
             align-items: center;
             background: var(--light-pink);
-            padding: 15px;
+            padding: 10px 12px;
             border-radius: var(--radius-md);
             margin-bottom: 12px;
             border: 1px solid transparent;
             transition: var(--transition);
             position: relative;
-        }
+}
 
         .item-row:focus-within {
             border-color: var(--soft-pink);
-            background: var(--white);
+background: var(--white);
             box-shadow: 0 4px 15px rgba(212, 163, 163, 0.1);
-        }
+}
 
         .item-number {
             position: absolute;
-            top: 5px;
+top: 5px;
             left: 5px;
             font-size: 0.65rem;
             font-weight: 700;
@@ -305,48 +306,52 @@
             background: rgba(255, 255, 255, 0.8);
             padding: 2px 6px;
             border-radius: 8px;
-            z-index: 5;
+z-index: 5;
             pointer-events: none;
         }
 
-        .img-upload { grid-area: img; align-self: center; }
-        .p-name { grid-area: name; font-weight: 700; }
-        .p-price-wrap { grid-area: price; display: flex; align-items: center; gap: 6px; }
-        .p-qty-wrap { grid-area: qty; display: flex; align-items: center; gap: 6px; }
+        .img-upload { grid-area: img; align-self: center;
+}
+        .p-name { grid-area: name; font-weight: 700; margin-bottom: 2px;
+}
+        .p-price-wrap { grid-area: price; display: flex; align-items: center; gap: 6px;
+}
+        .p-qty-wrap { grid-area: qty; display: flex; align-items: center; gap: 6px;
+}
         
         .p-memo-wrap {
             grid-area: memo;
-            display: flex;
+display: flex;
             align-items: center;
-            padding-top: 8px;
-            margin-top: 4px;
+            padding-top: 5px;
+            margin-top: 2px;
             border-top: 1px dashed var(--soft-pink);
-        }
+}
         .p-memo {
             background: transparent;
-            border: none !important;
+border: none !important;
             padding: 0 !important;
             font-size: 0.75rem;
             color: var(--text-light);
             font-style: italic;
-        }
+}
 
         .subtotal-text { 
             grid-area: subtotal;
-            text-align: right; 
+text-align: right; 
             font-size: 0.8rem; 
             color: var(--accent-gold); 
             font-weight: 700; 
-            padding-top: 8px;
-            margin-top: 4px;
+            padding-top: 5px;
+            margin-top: 2px;
             border-top: 1px dashed var(--soft-pink);
             white-space: nowrap; 
             min-width: 100px;
-        }
+}
 
         .btn-remove-row {
             position: absolute;
-            top: -8px;
+top: -8px;
             right: -8px;
             width: 28px;
             height: 28px;
@@ -355,78 +360,78 @@
             color: white !important;
             display: flex;
             align-items: center;
-            justify-content: center;
+justify-content: center;
             padding: 0;
             font-size: 0.7rem;
             box-shadow: 0 2px 8px rgba(229, 115, 115, 0.4);
             border: 2px solid var(--white) !important;
-            z-index: 10;
+z-index: 10;
         }
 
         .img-upload {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+height: 70px;
             border: 2px dashed var(--soft-pink);
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             overflow: hidden;
             background-size: cover;
-            background-position: center;
-            font-size: 1.5rem;
+background-position: center;
+            font-size: 1.2rem;
             color: var(--main-pink);
             background-color: var(--white);
             transition: var(--transition);
-        }
+}
 
         .img-upload:hover {
             border-color: var(--main-pink);
-            background-color: var(--light-pink);
+background-color: var(--light-pink);
         }
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 10px;
-            padding: 10px;
+border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 8px;
+            padding: 6px 10px;
             box-sizing: border-box;
             color: var(--text-color);
             font-size: 16px;
             transition: var(--transition);
-        }
+}
 
         input:focus {
             outline: none;
-            border-color: var(--main-pink);
+border-color: var(--main-pink);
             background-color: var(--white);
         }
 
         .footer-summary {
             margin-top: 20px;
-            text-align: right;
+text-align: right;
             border-top: 2px solid var(--light-pink);
             padding-top: 20px;
         }
 
         .total-items {
             font-size: 0.9rem;
-            color: var(--text-light);
+color: var(--text-light);
             font-weight: 500;
             margin-bottom: 2px;
         }
 
         .total-price {
             font-size: 1.8rem;
-            color: var(--main-pink);
+color: var(--main-pink);
             font-family: 'Playfair Display', serif;
             font-weight: 600;
         }
 
         .bonus-info-container {
             display: flex;
-            flex-direction: column;
+flex-direction: column;
             align-items: flex-end;
             gap: 8px;
             margin-top: 10px;
@@ -434,7 +439,7 @@
 
         .bonus-info {
             color: var(--accent-gold);
-            font-size: 0.85rem;
+font-size: 0.85rem;
             background: var(--accent-gold-light);
             padding: 12px 18px;
             border-radius: 12px;
@@ -442,13 +447,14 @@
             line-height: 1.5;
             text-align: left;
             width: fit-content;
-        }
+}
 
-        .next-bonus { font-weight: 700; color: var(--danger); }
+        .next-bonus { font-weight: 700; color: var(--danger);
+}
 
         .btn {
             cursor: pointer;
-            border: none;
+border: none;
             border-radius: 12px;
             padding: 8px 12px;
             transition: var(--transition);
@@ -457,47 +463,54 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+gap: 6px;
         }
 
         .btn-icon {
             width: 36px;
-            height: 36px;
+height: 36px;
             padding: 0;
             flex-shrink: 0;
             border-radius: 10px;
         }
 
-        .btn-add-item { background: var(--main-pink); color: white; flex: 2; height: 48px; font-weight: 700; }
-        .btn-duplicate { background: var(--white); border: 1.5px solid var(--main-pink); color: var(--main-pink); flex: 1; height: 48px; }
-        .btn-archive { background: #f5f5f5; color: var(--archive-color); }
-        .btn-remove { background: #fff5f5; color: var(--danger); }
-        .btn-bonus-trigger { background: var(--accent-gold-light); color: var(--accent-gold); }
+        .btn-add-item { background: var(--main-pink);
+color: white; flex: 2; height: 48px; font-weight: 700; }
+        .btn-duplicate { background: var(--white);
+border: 1.5px solid var(--main-pink); color: var(--main-pink); flex: 1; height: 48px;
+}
+        .btn-archive { background: #f5f5f5; color: var(--archive-color);
+}
+        .btn-remove { background: #fff5f5; color: var(--danger);
+}
+        .btn-bonus-trigger { background: var(--accent-gold-light); color: var(--accent-gold);
+}
         
-        .btn:active { transform: scale(0.95); }
+        .btn:active { transform: scale(0.95);
+}
 
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(90, 74, 74, 0.4);
             backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
-            justify-content: center;
+justify-content: center;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
-        }
+}
 
         .modal-overlay.active {
             opacity: 1;
-            visibility: visible;
+visibility: visible;
         }
 
         .modal-content {
             background: var(--white);
-            width: 85%;
+width: 85%;
             max-width: 320px;
             padding: 30px;
             border-radius: var(--radius-lg);
@@ -505,41 +518,48 @@
             box-shadow: var(--shadow);
             transform: translateY(20px);
             transition: var(--transition);
-        }
+}
 
         .modal-overlay.active .modal-content {
             transform: translateY(0);
-        }
+}
 
         .modal-title {
             font-family: 'Playfair Display', serif;
-            color: var(--main-pink);
+color: var(--main-pink);
             font-size: 1.4rem;
             margin-bottom: 10px;
         }
 
         .modal-text {
             color: var(--text-light);
-            font-size: 0.9rem;
+font-size: 0.9rem;
             margin-bottom: 25px;
         }
 
         .modal-btns {
             display: flex;
-            gap: 12px;
+gap: 12px;
         }
 
-        .btn-modal-cancel { background: var(--light-pink); color: var(--text-light); flex: 1; }
-        .btn-modal-confirm { background: var(--danger); color: white; flex: 1; }
-        .btn-modal-save { background: var(--main-pink); color: white; flex: 1; }
+        .btn-modal-cancel { background: var(--light-pink); color: var(--text-light); flex: 1;
+}
+        .btn-modal-confirm { background: var(--danger); color: white; flex: 1;
+}
+        .btn-modal-save { background: var(--main-pink); color: white; flex: 1;
+}
 
-        .hidden { display: none !important; }
+        .hidden { display: none !important;
+}
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0;
+transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0);
+}
         }
-        .shop-card { animation: fadeIn 0.4s ease-out; }
+        .shop-card { animation: fadeIn 0.4s ease-out;
+}
 
     </style>
 </head>
@@ -558,14 +578,16 @@
 
     <div id="app" class="container"></div>
 
-    <div id="delete-modal" class="modal-overlay">
+    
+<div id="delete-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-title">Remove Item</div>
             <div class="modal-text">この内容を削除しますか？</div>
             <div class="modal-btns">
                 <button class="btn btn-modal-cancel" onclick="closeModal()">キャンセル</button>
                 <button class="btn btn-modal-confirm" id="confirm-delete-btn">削除する</button>
-            </div>
+           
+ </div>
         </div>
     </div>
 
@@ -576,7 +598,8 @@
             <div id="modal-bonus-list" class="bonus-settings-list"></div>
             <button class="btn-add-bonus-in-modal" onclick="addBonusRowInModal()">＋ 特典条件を追加</button>
             <div class="modal-btns" style="margin-top:20px;">
-                <button class="btn btn-modal-cancel" onclick="closeBonusModal()">閉じる</button>
+  
+              <button class="btn btn-modal-cancel" onclick="closeBonusModal()">閉じる</button>
             </div>
         </div>
     </div>
@@ -585,88 +608,98 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker registered'))
+            
+    .then(reg => console.log('Service Worker registered'))
                 .catch(err => console.error('Service Worker registration failed', err));
-            });
+});
         }
 
         let setCounter = 0;
         let currentTab = 'main';
-        const DB_NAME = 'ShoppingAppDB';
+const DB_NAME = 'ShoppingAppDB';
         const DB_VERSION = 1;
         const STORE_NAME = 'shoppingData';
         let saveTimeout = null;
         let itemToDelete = null;
-        let currentSetId = null;
+let currentSetId = null;
 
         function openDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
                 request.onupgradeneeded = (e) => {
                     const db = e.target.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+              
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
                         db.createObjectStore(STORE_NAME);
                     }
                 };
                 request.onsuccess = (e) => resolve(e.target.result);
-                request.onerror = (e) => reject(e.target.error);
+            
+    request.onerror = (e) => reject(e.target.error);
             });
-        }
+}
 
         function switchTab(tab) {
             currentTab = tab;
-            document.getElementById('tab-main').classList.toggle('active', tab === 'main');
+document.getElementById('tab-main').classList.toggle('active', tab === 'main');
             document.getElementById('tab-archive').classList.toggle('active', tab === 'archive');
             document.getElementById('add-shop-btn').classList.toggle('hidden', tab === 'archive');
             renderAll();
-        }
+}
 
         function renderAll() {
             const cards = document.querySelectorAll('.shop-card');
-            cards.forEach(card => {
+cards.forEach(card => {
                 const isArchived = card.getAttribute('data-archived') === 'true';
                 if (currentTab === 'main') {
                     card.classList.toggle('hidden', isArchived);
                 } else {
-                    card.classList.toggle('hidden', !isArchived);
+                  
+  card.classList.toggle('hidden', !isArchived);
                 }
             });
-        }
+}
 
         function toggleArchive(setId) {
             const el = document.getElementById(setId);
-            if (!el) return;
+if (!el) return;
             const isArchived = el.getAttribute('data-archived') === 'true';
             el.setAttribute('data-archived', !isArchived);
             
             const btn = el.querySelector('.btn-archive');
-            btn.innerHTML = !isArchived ? '◖' : '◗'; 
+            btn.innerHTML = !isArchived ?
+'◖' : '◗'; 
             btn.title = !isArchived ? '復元' : 'アーカイブ';
             
             debouncedSave();
             renderAll();
-        }
+}
 
         function addSet(savedData = null) {
             setCounter++;
-            const setId = `set-${setCounter}`;
+const setId = `set-${setCounter}`;
             const app = document.getElementById('app');
             const isArchived = savedData ? !!savedData.isArchived : false;
-            const setHtml = `
+const setHtml = `
                 <div class="shop-card" id="${setId}" data-archived="${isArchived}">
                     <div class="shop-sticky-header">
                         <div class="shop-header">
-                            <input type="text" class="shop-title" placeholder="Shop Name" value="${savedData ? savedData.title : ''}" oninput="debouncedSave()">
+                            <input type="text" class="shop-title" placeholder="Shop 
+Name" value="${savedData ? savedData.title : ''}" oninput="debouncedSave()">
                             <div style="display: flex; gap: 5px;">
                                 <button class="btn btn-icon btn-bonus-trigger" onclick="openBonusModal('${setId}')" title="特典設定">🎁</button>
-                                <button class="btn btn-icon btn-archive" onclick="toggleArchive('${setId}')" title="${isArchived ? '復元' : 'アーカイブ'}">${isArchived ? '◖' : '◗'}</button>
+                         
+       <button class="btn btn-icon btn-archive" onclick="toggleArchive('${setId}')" title="${isArchived ? '復元' : 'アーカイブ'}">${isArchived ?
+'◖' : '◗'}</button>
                                 <button class="btn btn-icon btn-remove" onclick="removeSetConfirm('${setId}')">✕</button>
                             </div>
                         </div>
-                        <div class="header-summary-row">
+          
+              <div class="header-summary-row">
                             <div class="header-total-qty">Items: <span class="total-qty-val">0</span></div>
                             <div class="header-total-price">¥<span class="total-val">0</span></div>
-                        </div>
+                        
+</div>
                     </div>
 
                     <div class="hidden-bonus-settings hidden" id="bonus-container-${setId}"></div>
@@ -674,118 +707,128 @@
                     <div class="items-container" id="items-${setId}"></div>
 
                     <div style="margin-top: 20px; display: flex; gap: 12px;">
-                        <button class="btn btn-add-item" onclick="addItem('${setId}')">＋ 商品を追加</button>
+         
+               <button class="btn btn-add-item" onclick="addItem('${setId}')">＋ 商品を追加</button>
                         <button class="btn btn-duplicate" onclick="duplicateSet('${setId}')">複製</button>
                     </div>
 
                     <div class="footer-summary">
-                        <div class="total-items">Items: <span class="total-qty-val-footer">0</span></div>
+             
+           <div class="total-items">Items: <span class="total-qty-val-footer">0</span></div>
                         <div class="total-price">Total: ¥<span class="total-val-footer">0</span></div>
                         <div class="bonus-info-container" id="bonus-info-list-${setId}"></div>
                     </div>
-                </div>
+             
+   </div>
             `;
             
             app.insertAdjacentHTML('beforeend', setHtml);
-            if (savedData && savedData.bonusUnits) {
+if (savedData && savedData.bonusUnits) {
                 savedData.bonusUnits.forEach(unit => addBonusToData(setId, unit));
-            } else if (savedData && savedData.bonusUnit) {
+} else if (savedData && savedData.bonusUnit) {
                 addBonusToData(setId, savedData.bonusUnit);
-            } else {
+} else {
                 addBonusToData(setId, 5000);
-            }
+}
 
             const itemsContainer = document.getElementById(`items-${setId}`);
-            if (savedData && savedData.items && savedData.items.length > 0) {
+if (savedData && savedData.items && savedData.items.length > 0) {
                 savedData.items.forEach(item => addItem(setId, item));
-            } else {
+} else {
                 addItem(setId);
-            }
+}
             calculate(setId);
             renderAll();
-        }
+}
 
         function addBonusToData(setId, unitValue) {
             const container = document.getElementById(`bonus-container-${setId}`);
-            const input = document.createElement('input');
+const input = document.createElement('input');
             input.type = 'number';
             input.className = 'bonus-unit';
             input.value = unitValue;
             container.appendChild(input);
-        }
+}
 
         function openBonusModal(setId) {
             currentSetId = setId;
-            const modal = document.getElementById('bonus-modal');
+const modal = document.getElementById('bonus-modal');
             const listArea = document.getElementById('modal-bonus-list');
             listArea.innerHTML = '';
 
             const currentUnits = document.getElementById(`bonus-container-${setId}`).querySelectorAll('.bonus-unit');
-            currentUnits.forEach(input => {
+currentUnits.forEach(input => {
                 addBonusRowInModal(input.value);
             });
-            modal.classList.add('active');
+modal.classList.add('active');
         }
 
         function addBonusRowInModal(val = 5000) {
             const listArea = document.getElementById('modal-bonus-list');
-            const div = document.createElement('div');
+const div = document.createElement('div');
             div.className = 'bonus-badge';
             div.innerHTML = `
                 <div style="display:flex; align-items:center; gap:5px;">
                     <input type="number" inputmode="numeric" class="modal-unit-input bonus-unit" value="${val}">
                     <span>円ごと</span>
                 </div>
-                <button class="btn-remove-bonus" onclick="this.parentElement.remove()">✕</button>
+           
+     <button class="btn-remove-bonus" onclick="this.parentElement.remove()">✕</button>
             `;
-            listArea.appendChild(div);
+listArea.appendChild(div);
         }
 
         function closeBonusModal() {
             const container = document.getElementById(`bonus-container-${currentSetId}`);
-            container.innerHTML = '';
+container.innerHTML = '';
             const modalInputs = document.querySelectorAll('.modal-unit-input');
             modalInputs.forEach(mi => {
                 addBonusToData(currentSetId, mi.value);
             });
-            calculate(currentSetId);
+calculate(currentSetId);
             document.getElementById('bonus-modal').classList.remove('active');
             currentSetId = null;
         }
 
         function addItem(setId, itemData = null) {
             const container = document.getElementById(`items-${setId}`);
-            if(!container) return;
+if(!container) return;
             const itemRow = document.createElement('div');
             itemRow.className = 'item-row';
             
             const randomId = Math.random().toString(36).substr(2, 9);
-            const bgStyle = itemData?.img ? `background-image: url(${itemData.img}); border-style: solid;` : '';
+            const bgStyle = itemData?.img ?
+`background-image: url(${itemData.img}); border-style: solid;` : '';
 
             itemRow.innerHTML = `
                 <div class="item-number">#</div>
                 <label class="img-upload" id="label-${randomId}" style="${bgStyle}">
-                    ${itemData?.img ? '' : '+'}
+                    ${itemData?.img ?
+'' : '+'}
                     <input type="file" hidden accept="image/*" onchange="handleImage(this, 'label-${randomId}')">
                 </label>
                 <input type="text" class="p-name" placeholder="商品名" value="${itemData ? itemData.name : ''}" oninput="debouncedSave()">
                 <div class="p-price-wrap">
-                    <span style="font-size:0.75rem; color:var(--main-pink); font-weight:bold">¥</span>
+               
+     <span style="font-size:0.75rem; color:var(--main-pink); font-weight:bold">¥</span>
                     <input type="number" inputmode="numeric" class="p-price" placeholder="単価" value="${itemData ? itemData.price : ''}" oninput="calculate('${setId}')">
                 </div>
                 <div class="p-qty-wrap">
                     <span style="font-size:0.75rem; color:var(--main-pink); font-weight:bold">Qty</span>
-                    <input type="number" inputmode="numeric" class="p-qty" value="${itemData ? itemData.qty : 1}" oninput="calculate('${setId}')">
+      
+              <input type="number" inputmode="numeric" class="p-qty" value="${itemData ? itemData.qty : 1}" oninput="calculate('${setId}')">
                 </div>
                 <div class="p-memo-wrap">
-                    <input type="text" class="p-memo" placeholder="memo..." maxlength="20" value="${itemData ? (itemData.memo || '') : ''}" oninput="debouncedSave()">
+                    <input type="text" class="p-memo" placeholder="memo..." maxlength="20" value="${itemData ?
+(itemData.memo || '') : ''}" oninput="debouncedSave()">
                 </div>
                 <div class="subtotal-text">Subtotal: ¥0</div>
                 <button class="btn btn-remove btn-remove-row" onclick="confirmRemoveRow(this, '${setId}')">✕</button>
             `;
             container.appendChild(itemRow);
             calculate(setId);
-        }
+    
+    }
 
         function confirmRemoveRow(btn, setId) {
             itemToDelete = btn.parentElement;
@@ -794,34 +837,36 @@
             modal.querySelector('.modal-title').innerText = "Remove Item";
             modal.classList.add('active');
             
-            document.getElementById('confirm-delete-btn').onclick = function() {
+   
+         document.getElementById('confirm-delete-btn').onclick = function() {
                 if (itemToDelete) {
                     itemToDelete.remove();
                     calculate(currentSetId);
                     closeModal();
-                }
+          
+      }
             };
         }
 
         function removeSetConfirm(setId) {
             currentSetId = setId;
-            const modal = document.getElementById('delete-modal');
+const modal = document.getElementById('delete-modal');
             modal.querySelector('.modal-title').innerText = "Remove Shop";
             modal.classList.add('active');
             
             document.getElementById('confirm-delete-btn').onclick = function() {
                 const el = document.getElementById(currentSetId);
-                if(el) {
+if(el) {
                     el.remove();
-                    debouncedSave();
+debouncedSave();
                     closeModal();
                 }
             };
-        }
+}
 
         function closeModal() {
             const modal = document.getElementById('delete-modal');
-            modal.classList.remove('active');
+modal.classList.remove('active');
             itemToDelete = null;
             currentSetId = null;
         }
@@ -829,82 +874,86 @@
         function handleImage(input, labelId) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+reader.onload = function(e) {
                     const label = document.getElementById(labelId);
-                    if (label) {
+if (label) {
                         label.style.backgroundImage = `url(${e.target.result})`;
-                        label.style.borderStyle = 'solid';
+label.style.borderStyle = 'solid';
                         label.innerText = '';
                         debouncedSave();
                     }
                 };
-                reader.readAsDataURL(input.files[0]);
+reader.readAsDataURL(input.files[0]);
             }
         }
 
         function calculate(setId) {
             const set = document.getElementById(setId);
-            if (!set) return;
+if (!set) return;
             const rows = set.querySelectorAll('.item-row');
             let total = 0;
             let totalQty = 0;
-            rows.forEach((row, index) => {
+rows.forEach((row, index) => {
                 const numEl = row.querySelector('.item-number');
                 if(numEl) numEl.textContent = `#${index + 1}`;
 
                 const price = parseFloat(row.querySelector('.p-price').value) || 0;
                 const qty = parseFloat(row.querySelector('.p-qty').value) || 0;
-                const sub = price * qty;
+               
+ const sub = price * qty;
                 row.querySelector('.subtotal-text').textContent = `Subtotal: ¥${sub.toLocaleString()}`;
                 total += sub;
                 totalQty += qty;
             });
-            set.querySelector('.total-val').textContent = total.toLocaleString();
+set.querySelector('.total-val').textContent = total.toLocaleString();
             set.querySelector('.total-qty-val').textContent = totalQty.toLocaleString();
             set.querySelector('.total-val-footer').textContent = total.toLocaleString();
             set.querySelector('.total-qty-val-footer').textContent = totalQty.toLocaleString();
 
             const unitInputs = set.querySelectorAll('.bonus-unit');
             const infoListContainer = document.getElementById(`bonus-info-list-${setId}`);
-            infoListContainer.innerHTML = '';
+infoListContainer.innerHTML = '';
             unitInputs.forEach(input => {
                 const unit = parseFloat(input.value) || 0;
                 if (unit <= 0) return;
 
                 const count = Math.floor(total / unit);
                 const remainder = total % unit;
-                let next = (remainder === 0 && total > 0) ? 0 : unit - remainder;
+            
+    let next = (remainder === 0 && total > 0) ? 0 : unit - remainder;
                 if (total === 0) next = unit;
 
                 const infoBox = document.createElement('div');
                 infoBox.className = 'bonus-info';
                 infoBox.innerHTML = `
-                    特典(¥${unit.toLocaleString()}): <strong class="bonus-count" style="font-size:1.2rem; color:var(--main-pink)">${count}</strong> 個獲得中<br>
+    
+                特典(¥${unit.toLocaleString()}): <strong class="bonus-count" style="font-size:1.2rem; color:var(--main-pink)">${count}</strong> 個獲得中<br>
                     次まであと <span class="next-bonus">¥<span class="next-bonus-val">${next.toLocaleString()}</span></span>
                 `;
                 infoListContainer.appendChild(infoBox);
             });
-            debouncedSave();
+debouncedSave();
         }
 
         function duplicateSet(setId) {
             const set = document.getElementById(setId);
-            if (!set) return;
+if (!set) return;
             
             const bonusUnits = [];
             set.querySelectorAll('.bonus-unit').forEach(input => bonusUnits.push(input.value));
-            const data = {
+const data = {
                 title: set.querySelector('.shop-title').value + " (Copy)",
                 bonusUnits: bonusUnits,
                 isArchived: false,
                 items: []
             };
-            set.querySelectorAll('.item-row').forEach(row => {
+set.querySelectorAll('.item-row').forEach(row => {
                 const bgImg = row.querySelector('.img-upload').style.backgroundImage;
                 data.items.push({
                     img: bgImg ? bgImg.slice(5, -2).replace(/"/g, "") : "",
                     name: row.querySelector('.p-name').value,
-                    price: row.querySelector('.p-price').value,
+               
+     price: row.querySelector('.p-price').value,
                     qty: row.querySelector('.p-qty').value,
                     memo: row.querySelector('.p-memo').value
                 });
@@ -912,7 +961,8 @@
             addSet(data);
         }
 
-        function debouncedSave() {
+    
+    function debouncedSave() {
             if (saveTimeout) clearTimeout(saveTimeout);
             saveTimeout = setTimeout(() => {
                 saveAll();
@@ -921,59 +971,64 @@
 
         async function saveAll() {
             const allData = [];
-            const cards = document.querySelectorAll('.shop-card');
+ 
+           const cards = document.querySelectorAll('.shop-card');
             
             cards.forEach(set => {
                 const items = [];
-                set.querySelectorAll('.item-row').forEach(row => {
+set.querySelectorAll('.item-row').forEach(row => {
                     const bgImg = row.querySelector('.img-upload').style.backgroundImage;
                     items.push({
                         img: bgImg ? bgImg.slice(5, -2).replace(/"/g, "") : "",
-                        name: row.querySelector('.p-name').value,
+                        
+name: row.querySelector('.p-name').value,
                         price: row.querySelector('.p-price').value,
                         qty: row.querySelector('.p-qty').value,
                         memo: row.querySelector('.p-memo').value
                     });
-                });
+    
+            });
 
                 const bonusUnits = [];
                 set.querySelectorAll('.bonus-unit').forEach(input => bonusUnits.push(input.value));
 
                 allData.push({
                     title: set.querySelector('.shop-title').value,
-                    bonusUnits: bonusUnits,
+              
+      bonusUnits: bonusUnits,
                     isArchived: set.getAttribute('data-archived') === 'true',
                     items: items
                 });
             });
-            try {
+try {
                 const db = await openDB();
-                const tx = db.transaction(STORE_NAME, 'readwrite');
+const tx = db.transaction(STORE_NAME, 'readwrite');
                 const store = tx.objectStore(STORE_NAME);
                 store.put(allData, 'currentAppData');
-            } catch (e) {
+} catch (e) {
                 console.error("Save failed", e);
-            }
+}
         }
 
         async function loadAll() {
             try {
                 const db = await openDB();
-                const tx = db.transaction(STORE_NAME, 'readonly');
+const tx = db.transaction(STORE_NAME, 'readonly');
                 const store = tx.objectStore(STORE_NAME);
                 const request = store.get('currentAppData');
-                request.onsuccess = () => {
+request.onsuccess = () => {
                     const data = request.result;
-                    if (data && Array.isArray(data) && data.length > 0) {
+if (data && Array.isArray(data) && data.length > 0) {
                         data.forEach(d => addSet(d));
-                    } else {
+} else {
                         addSet();
-                    }
+}
                     renderAll();
-                };
+};
                 
                 request.onerror = () => { addSet(); };
-            } catch (e) { addSet(); }
+            } catch (e) { addSet();
+}
         }
 
         window.addEventListener('DOMContentLoaded', loadAll);
