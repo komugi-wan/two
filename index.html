@@ -38,10 +38,9 @@
             padding: 20px 15px;
             line-height: 1.6;
             -webkit-tap-highlight-color: transparent;
-            padding-bottom: 120px;
+            padding-bottom: 60px;
         }
 
-        /* ヘッダーデザイン */
         .header-title {
             text-align: center;
             font-family: 'Playfair Display', serif;
@@ -61,18 +60,22 @@
             text-transform: uppercase;
         }
 
-        /* タブメニュー */
-        .tab-menu {
+        .tab-wrapper {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 30px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-menu {
+            display: flex;
             background: rgba(212, 163, 163, 0.1);
             padding: 5px;
             border-radius: 50px;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .tab-btn {
@@ -93,12 +96,28 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
+        .btn-main-add { 
+            background: var(--main-pink);
+            color: white; 
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(212, 163, 163, 0.3);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* ショップカード */
         .shop-card {
             background: var(--white);
             border-radius: var(--radius-lg);
@@ -110,11 +129,55 @@
             transition: var(--transition);
         }
 
+        /* --- スティッキーヘッダー修正版 --- */
+        .shop-sticky-header {
+            position: -webkit-sticky;
+            position: sticky;
+            top: -1px; 
+            z-index: 100;
+            background: transparent; 
+            margin: -24px -24px 20px -24px;
+            padding: 24px 24px 15px 24px;
+            /* 下線の色を調整 */
+            border-bottom: 1px solid rgba(212, 163, 163, 0.1);
+        }
+
+        /* ステップ2：背面レイヤー（隙間を埋めるために少し広げる） */
+        .shop-sticky-header::before {
+            content: "";
+            position: absolute;
+            top: -2px; /* 1px広げて隙間を防止 */
+            left: -2px;
+            right: -2px;
+            bottom: 0;
+            background-color: var(--light-pink);
+            z-index: -2;
+        }
+
+        /* ステップ3：表面レイヤー（カードの白・角丸） */
+        .shop-sticky-header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--white);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            z-index: -1;
+        }
+
+        .shop-header, .header-summary-row {
+            position: relative;
+            z-index: 1;
+        }
+        /* --------------------------------------------- */
+
         .shop-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             gap: 10px;
         }
 
@@ -135,7 +198,25 @@
             border-bottom-color: var(--main-pink);
         }
 
-        /* 特典設定モーダル内スタイル */
+        .header-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        .header-total-qty {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .header-total-price {
+            font-size: 1.4rem;
+            color: var(--main-pink);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
         .bonus-settings-list {
             display: flex;
             flex-direction: column;
@@ -190,14 +271,13 @@
             padding: 0 5px;
         }
 
-        /* 商品行：グリッド（削除ボタンを排除したレイアウト） */
         .item-row {
             display: grid;
             grid-template-columns: 80px 1fr 1fr;
             grid-template-areas: 
                 "img name name"
                 "img price qty"
-                "img subtotal subtotal";
+                "img memo subtotal";
             gap: 10px;
             align-items: center;
             background: var(--light-pink);
@@ -206,7 +286,7 @@
             margin-bottom: 12px;
             border: 1px solid transparent;
             transition: var(--transition);
-            position: relative; /* 削除ボタン・通し番号の基準点 */
+            position: relative;
         }
 
         .item-row:focus-within {
@@ -215,7 +295,6 @@
             box-shadow: 0 4px 15px rgba(212, 163, 163, 0.1);
         }
 
-        /* 通し番号のスタイル */
         .item-number {
             position: absolute;
             top: 5px;
@@ -234,8 +313,26 @@
         .p-name { grid-area: name; font-weight: 700; }
         .p-price-wrap { grid-area: price; display: flex; align-items: center; gap: 6px; }
         .p-qty-wrap { grid-area: qty; display: flex; align-items: center; gap: 6px; }
+        
+        .p-memo-wrap {
+            grid-area: memo;
+            display: flex;
+            align-items: center;
+            padding-top: 8px;
+            margin-top: 4px;
+            border-top: 1px dashed var(--soft-pink);
+        }
+        .p-memo {
+            background: transparent;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
         .subtotal-text { 
-            grid-area: subtotal; 
+            grid-area: subtotal;
             text-align: right; 
             font-size: 0.8rem; 
             color: var(--accent-gold); 
@@ -243,9 +340,10 @@
             padding-top: 8px;
             margin-top: 4px;
             border-top: 1px dashed var(--soft-pink);
+            white-space: nowrap; 
+            min-width: 100px;
         }
 
-        /* 削除ボタンの修正：右上に丸く配置 */
         .btn-remove-row {
             position: absolute;
             top: -8px;
@@ -265,7 +363,6 @@
             z-index: 10;
         }
 
-        /* 画像アップロード */
         .img-upload {
             width: 80px;
             height: 80px;
@@ -306,7 +403,6 @@
             background-color: var(--white);
         }
 
-        /* 合計エリア */
         .footer-summary {
             margin-top: 20px;
             text-align: right;
@@ -350,7 +446,6 @@
 
         .next-bonus { font-weight: 700; color: var(--danger); }
 
-        /* ボタン群 */
         .btn {
             cursor: pointer;
             border: none;
@@ -365,7 +460,6 @@
             gap: 6px;
         }
 
-        /* ヘッダー内アイコンボタン：サイズ固定 */
         .btn-icon {
             width: 36px;
             height: 36px;
@@ -380,22 +474,8 @@
         .btn-remove { background: #fff5f5; color: var(--danger); }
         .btn-bonus-trigger { background: var(--accent-gold-light); color: var(--accent-gold); }
         
-        .btn-main-add { 
-            background: var(--text-color); color: white; 
-            padding: 18px 30px; font-size: 1rem; 
-            position: fixed; bottom: 30px; left: 50%;
-            transform: translateX(-50%);
-            width: 85%; max-width: 340px;
-            box-shadow: 0 10px 25px rgba(90, 74, 74, 0.3);
-            z-index: 100;
-            border-radius: 50px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
         .btn:active { transform: scale(0.95); }
 
-        /* モーダル共通 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -468,14 +548,15 @@
     <div class="header-title">Shopping Atelier</div>
     <div class="header-subtitle">— Curate Your Collection —</div>
 
-    <div class="tab-menu">
-        <button class="tab-btn active" id="tab-main" onclick="switchTab('main')">Current</button>
-        <button class="tab-btn" id="tab-archive" onclick="switchTab('archive')">Archive</button>
+    <div class="tab-wrapper">
+        <div class="tab-menu">
+            <button class="tab-btn active" id="tab-main" onclick="switchTab('main')">Current</button>
+            <button class="tab-btn" id="tab-archive" onclick="switchTab('archive')">Archive</button>
+        </div>
+        <button id="add-shop-btn" class="btn-main-add" onclick="addSet()" title="Create New Shop">＋</button>
     </div>
 
     <div id="app" class="container"></div>
-
-    <button id="add-shop-btn" class="btn btn-main-add" onclick="addSet()">+ Create New Shop</button>
 
     <div id="delete-modal" class="modal-overlay">
         <div class="modal-content">
@@ -504,13 +585,13 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.error('Service Worker registration failed', err));
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.error('Service Worker registration failed', err));
             });
         }
 
         let setCounter = 0;
-        let currentTab = 'main'; 
+        let currentTab = 'main';
         const DB_NAME = 'ShoppingAppDB';
         const DB_VERSION = 1;
         const STORE_NAME = 'shoppingData';
@@ -559,7 +640,7 @@
             el.setAttribute('data-archived', !isArchived);
             
             const btn = el.querySelector('.btn-archive');
-            btn.innerHTML = !isArchived ? '◖' : '◗'; // アイコン表示
+            btn.innerHTML = !isArchived ? '◖' : '◗'; 
             btn.title = !isArchived ? '復元' : 'アーカイブ';
             
             debouncedSave();
@@ -571,15 +652,20 @@
             const setId = `set-${setCounter}`;
             const app = document.getElementById('app');
             const isArchived = savedData ? !!savedData.isArchived : false;
-            
             const setHtml = `
                 <div class="shop-card" id="${setId}" data-archived="${isArchived}">
-                    <div class="shop-header">
-                        <input type="text" class="shop-title" placeholder="Shop Name" value="${savedData ? savedData.title : ''}" oninput="debouncedSave()">
-                        <div style="display: flex; gap: 5px;">
-                            <button class="btn btn-icon btn-bonus-trigger" onclick="openBonusModal('${setId}')" title="特典設定">🎁</button>
-                            <button class="btn btn-icon btn-archive" onclick="toggleArchive('${setId}')" title="${isArchived ? '復元' : 'アーカイブ'}">${isArchived ? '◖' : '◗'}</button>
-                            <button class="btn btn-icon btn-remove" onclick="removeSetConfirm('${setId}')">✕</button>
+                    <div class="shop-sticky-header">
+                        <div class="shop-header">
+                            <input type="text" class="shop-title" placeholder="Shop Name" value="${savedData ? savedData.title : ''}" oninput="debouncedSave()">
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn btn-icon btn-bonus-trigger" onclick="openBonusModal('${setId}')" title="特典設定">🎁</button>
+                                <button class="btn btn-icon btn-archive" onclick="toggleArchive('${setId}')" title="${isArchived ? '復元' : 'アーカイブ'}">${isArchived ? '◖' : '◗'}</button>
+                                <button class="btn btn-icon btn-remove" onclick="removeSetConfirm('${setId}')">✕</button>
+                            </div>
+                        </div>
+                        <div class="header-summary-row">
+                            <div class="header-total-qty">Items: <span class="total-qty-val">0</span></div>
+                            <div class="header-total-price">¥<span class="total-val">0</span></div>
                         </div>
                     </div>
 
@@ -593,16 +679,14 @@
                     </div>
 
                     <div class="footer-summary">
-                        <div class="total-items">Items: <span class="total-qty-val">0</span></div>
-                        <div class="total-price">Total: ¥<span class="total-val">0</span></div>
+                        <div class="total-items">Items: <span class="total-qty-val-footer">0</span></div>
+                        <div class="total-price">Total: ¥<span class="total-val-footer">0</span></div>
                         <div class="bonus-info-container" id="bonus-info-list-${setId}"></div>
                     </div>
                 </div>
             `;
             
             app.insertAdjacentHTML('beforeend', setHtml);
-
-            // 特典設定の復元（隠しコンテナへ）
             if (savedData && savedData.bonusUnits) {
                 savedData.bonusUnits.forEach(unit => addBonusToData(setId, unit));
             } else if (savedData && savedData.bonusUnit) {
@@ -621,9 +705,6 @@
             renderAll();
         }
 
-        /**
-         * 特典設定用データ保持（非表示）
-         */
         function addBonusToData(setId, unitValue) {
             const container = document.getElementById(`bonus-container-${setId}`);
             const input = document.createElement('input');
@@ -633,9 +714,6 @@
             container.appendChild(input);
         }
 
-        /**
-         * 特典設定モーダル関連
-         */
         function openBonusModal(setId) {
             currentSetId = setId;
             const modal = document.getElementById('bonus-modal');
@@ -646,7 +724,6 @@
             currentUnits.forEach(input => {
                 addBonusRowInModal(input.value);
             });
-
             modal.classList.add('active');
         }
 
@@ -665,14 +742,12 @@
         }
 
         function closeBonusModal() {
-            // モーダルの内容を元のショップの隠しコンテナに同期
             const container = document.getElementById(`bonus-container-${currentSetId}`);
             container.innerHTML = '';
             const modalInputs = document.querySelectorAll('.modal-unit-input');
             modalInputs.forEach(mi => {
                 addBonusToData(currentSetId, mi.value);
             });
-
             calculate(currentSetId);
             document.getElementById('bonus-modal').classList.remove('active');
             currentSetId = null;
@@ -701,6 +776,9 @@
                 <div class="p-qty-wrap">
                     <span style="font-size:0.75rem; color:var(--main-pink); font-weight:bold">Qty</span>
                     <input type="number" inputmode="numeric" class="p-qty" value="${itemData ? itemData.qty : 1}" oninput="calculate('${setId}')">
+                </div>
+                <div class="p-memo-wrap">
+                    <input type="text" class="p-memo" placeholder="memo..." maxlength="20" value="${itemData ? (itemData.memo || '') : ''}" oninput="debouncedSave()">
                 </div>
                 <div class="subtotal-text">Subtotal: ¥0</div>
                 <button class="btn btn-remove btn-remove-row" onclick="confirmRemoveRow(this, '${setId}')">✕</button>
@@ -770,9 +848,7 @@
             const rows = set.querySelectorAll('.item-row');
             let total = 0;
             let totalQty = 0;
-
             rows.forEach((row, index) => {
-                // 通し番号の更新
                 const numEl = row.querySelector('.item-number');
                 if(numEl) numEl.textContent = `#${index + 1}`;
 
@@ -783,14 +859,14 @@
                 total += sub;
                 totalQty += qty;
             });
-
             set.querySelector('.total-val').textContent = total.toLocaleString();
             set.querySelector('.total-qty-val').textContent = totalQty.toLocaleString();
+            set.querySelector('.total-val-footer').textContent = total.toLocaleString();
+            set.querySelector('.total-qty-val-footer').textContent = totalQty.toLocaleString();
 
             const unitInputs = set.querySelectorAll('.bonus-unit');
             const infoListContainer = document.getElementById(`bonus-info-list-${setId}`);
             infoListContainer.innerHTML = '';
-
             unitInputs.forEach(input => {
                 const unit = parseFloat(input.value) || 0;
                 if (unit <= 0) return;
@@ -808,7 +884,6 @@
                 `;
                 infoListContainer.appendChild(infoBox);
             });
-            
             debouncedSave();
         }
 
@@ -818,7 +893,6 @@
             
             const bonusUnits = [];
             set.querySelectorAll('.bonus-unit').forEach(input => bonusUnits.push(input.value));
-
             const data = {
                 title: set.querySelector('.shop-title').value + " (Copy)",
                 bonusUnits: bonusUnits,
@@ -831,7 +905,8 @@
                     img: bgImg ? bgImg.slice(5, -2).replace(/"/g, "") : "",
                     name: row.querySelector('.p-name').value,
                     price: row.querySelector('.p-price').value,
-                    qty: row.querySelector('.p-qty').value
+                    qty: row.querySelector('.p-qty').value,
+                    memo: row.querySelector('.p-memo').value
                 });
             });
             addSet(data);
@@ -856,7 +931,8 @@
                         img: bgImg ? bgImg.slice(5, -2).replace(/"/g, "") : "",
                         name: row.querySelector('.p-name').value,
                         price: row.querySelector('.p-price').value,
-                        qty: row.querySelector('.p-qty').value
+                        qty: row.querySelector('.p-qty').value,
+                        memo: row.querySelector('.p-memo').value
                     });
                 });
 
@@ -870,7 +946,6 @@
                     items: items
                 });
             });
-
             try {
                 const db = await openDB();
                 const tx = db.transaction(STORE_NAME, 'readwrite');
@@ -887,7 +962,6 @@
                 const tx = db.transaction(STORE_NAME, 'readonly');
                 const store = tx.objectStore(STORE_NAME);
                 const request = store.get('currentAppData');
-
                 request.onsuccess = () => {
                     const data = request.result;
                     if (data && Array.isArray(data) && data.length > 0) {
